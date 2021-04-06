@@ -1,0 +1,13 @@
+{
+    "tables": [
+        {
+            "name":"license",
+            "columns":[
+                {
+                    "name":"",
+                    "type":""
+                }
+            ]
+        }
+    ]
+}
