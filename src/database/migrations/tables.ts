@@ -42,35 +42,35 @@ function createLicense(table : any) {
 function createCharacter(table : any) {
   table.increments("id").primary();
   table.string("name").notNullable();
-  table.integer("license_id").references("id").inTable(config.license);
+  table.integer(`${config.license}_id`).references("id").inTable(config.license);
   table.integer("address_number").notNullable();
   table.string("address_street_name").notNullable();
   table.integer("ssn").notNullable();
 }
 
 function createClub(table: any) {
-  table.string("id").primary();
-  table.integer("person_id").references("id").inTable(config.character);
+  table.increments("id").primary();
+  table.integer(`${config.character}_id`).references("id").inTable(config.character);
   table.string("name").notNullable();
-  table.string("membership_start_date").notNullable();
+  table.integer("membership_start_date").notNullable();
   table.string("membership_status").notNullable();
 }
 
 function createEventLog(table: any) {
   table.increments("id").primary();
-  table.integer("person_id").references("id").inTable(config.character);
+  table.integer(`${config.character}_id`).references("id").inTable(config.character);
   table.string("event_name").notNullable();
-  table.integer("date").notNullable();
+  table.integer("event_date").notNullable();
 }
 
 function createInterview(table: any) {
   table.increments("id").primary();
-  table.integer("person_id").references("id").inTable(config.character);
+  table.integer(`${config.character}_id`).references("id").inTable(config.character);
   table.string("transcript").notNullable();
 }
 
 function createClubCheckIn(table: any) {
-  table.string("membership_id").primary();
+  table.integer(`${config.club}_id`).references("id").inTable(config.character).primary();
   table.integer("check_in_date").notNullable();
   table.integer("check_in_time").notNullable();
   table.integer("check_out_time").notNullable();
@@ -78,7 +78,6 @@ function createClubCheckIn(table: any) {
 
 function createScenario(table: any) {
   table.integer("date").primary();
-  table.string("type").notNullable();
   table.string("description").notNullable();
   table.string("city").notNullable();
 }

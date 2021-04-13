@@ -1,19 +1,21 @@
 import * as Knex from "knex";
+import * as faker from "faker";
 import { config } from "../../app";
+import { dateToInt } from "../../utils/Utils";
 
 export async function seed(knex: Knex): Promise<any> {
-  return knex(config.character)
-    .del()
-    .then(() => {
-      return knex(config.character).insert([
-        {
-          street: "Av. Brasil",
-          number: 1586,
-          hint: "Do outro lado do Paraibuna",
-          neighborhood: "Centro",
-          city: "Juiz de Fora",
-          uf: "MG",
-        },
-      ]);
-    });
+  const fakeScenarios = [];
+  const desiredScenarios = 10;
+
+  for (let index = 0; index < desiredScenarios; index++) {
+    fakeScenarios.push(createFakeScenario());
+  }
+
+  await knex(config.scenario).insert(fakeScenarios);
 }
+
+const createFakeScenario = () => ({
+  date: dateToInt(faker.date.past()),
+  description: faker.lorem.paragraph(),
+  city: faker.address.city()
+});

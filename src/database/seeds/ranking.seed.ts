@@ -1,19 +1,19 @@
 import * as Knex from "knex";
+import * as faker from "faker";
 import { config } from "../../app";
 
 export async function seed(knex: Knex): Promise<any> {
-  return knex(config.character)
-    .del()
-    .then(() => {
-      return knex(config.character).insert([
-        {
-          street: "Av. Brasil",
-          number: 1586,
-          hint: "Do outro lado do Paraibuna",
-          neighborhood: "Centro",
-          city: "Juiz de Fora",
-          uf: "MG",
-        },
-      ]);
-    });
+  const fakeRankings = [];
+  const desiredRankings = 10;
+
+  for (let index = 0; index < desiredRankings; index++) {
+    fakeRankings.push(createFakeRanking());
+  }
+
+  await knex(config.ranking).insert(fakeRankings);
 }
+
+const createFakeRanking = () => ({
+  ssn: faker.phone.phoneNumber('#########'),
+  annual_income: faker.datatype.number({ min: 25000, max: 390000 }),
+});

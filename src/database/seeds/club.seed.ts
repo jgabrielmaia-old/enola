@@ -1,19 +1,22 @@
 import * as Knex from "knex";
+import * as faker from "faker";
 import { config } from "../../app";
+import { dateToInt } from "../../utils/Utils";
 
 export async function seed(knex: Knex): Promise<any> {
-  return knex(config.character)
-    .del()
-    .then(() => {
-      return knex(config.character).insert([
-        {
-          street: "Av. Brasil",
-          number: 1586,
-          hint: "Do outro lado do Paraibuna",
-          neighborhood: "Centro",
-          city: "Juiz de Fora",
-          uf: "MG",
-        },
-      ]);
-    });
+  const fakeClubs = [];
+  const desiredClubs = 10;
+
+  for (let index = 0; index < desiredClubs; index++) {
+    fakeClubs.push(createFakeClub(index));
+  }
+
+  await knex(config.club).insert(fakeClubs);
 }
+
+const createFakeClub = (id: number) => ({
+  [`${config.character}_id`]: id,
+  name: faker.company.companyName(),
+  membership_start_date: dateToInt(faker.date.past()),
+  membership_status: faker.random.arrayElement(["active", "inactive","gold","platinum"]),
+});

@@ -1,19 +1,19 @@
 import * as Knex from "knex";
+import * as faker from "faker";
 import { config } from "../../app";
 
 export async function seed(knex: Knex): Promise<any> {
-  return knex(config.character)
-    .del()
-    .then(() => {
-      return knex(config.character).insert([
-        {
-          street: "Av. Brasil",
-          number: 1586,
-          hint: "Do outro lado do Paraibuna",
-          neighborhood: "Centro",
-          city: "Juiz de Fora",
-          uf: "MG",
-        },
-      ]);
-    });
+  const fakeInterviews = [];
+  const desiredCharacters = 10;
+
+  for (let index = 0; index < desiredCharacters; index++) {
+    fakeInterviews.push(createFakeInterview(index));
+  }
+
+  await knex(config.interview).insert(fakeInterviews);
 }
+
+const createFakeInterview = (id: number) => ({
+  [`${config.character}_id`]: id,
+  transcript: faker.lorem.paragraph()
+});
