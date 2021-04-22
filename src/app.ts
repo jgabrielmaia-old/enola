@@ -8,4 +8,5 @@ export const config = {
     scenario: "crime_scene_report",
     ranking: "income",
     solution: "solution",
+    generation: 10000
 }

@@ -5,13 +5,29 @@ import { dateToInt } from "../../utils/Utils";
 
 export async function seed(knex: Knex): Promise<any> {
   const fakeClubCheckIns = [];
-  const desiredClubCheckIns = 10;
-  
-  for (let index = 0; index < desiredClubCheckIns; index++) {
+  const desiredClubCheckIns = config.generation;
+
+  for (let index = 1; index <= desiredClubCheckIns; index++) {
     fakeClubCheckIns.push(createFakeClubCheckIns(index));
   }
+  
+  const groupedFake = fakeClubCheckIns.reduce((accumulator, currentElem, index) => {
+    const insertGroup = Math.floor(index / 10) + 1;
+    accumulator[insertGroup] = accumulator[insertGroup] || []
+    accumulator[insertGroup].push(currentElem);
+    return accumulator;
+  }, []);
 
-  await knex(config.clubCheckIn).insert(fakeClubCheckIns);
+  groupedFake.forEach((element: any) => {
+    knex.transaction((trx) => {
+      knex(config.clubCheckIn)
+      .transacting(trx)
+      .insert(element)
+      .then(trx.commit)
+      .catch(trx.rollback);
+    })
+    .catch((err) => console.error(err));
+  });
 }
 
 const random_time = () => faker.datatype.number({ min: 900, max: 1800 });

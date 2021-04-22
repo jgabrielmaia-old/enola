@@ -4,13 +4,29 @@ import { config } from "../../app";
 
 export async function seed(knex: Knex): Promise<any> {
   const fakeCharacters = [];
-  const desiredCharacters = 10;
-  
-  for (let index = 0; index < desiredCharacters; index++) {
+  const desiredCharacters = config.generation;
+
+  for (let index = 1; index <= desiredCharacters; index++) {
     fakeCharacters.push(createFakeCharacter(index));
   }
 
-  await knex(config.character).insert(fakeCharacters);
+  const groupedFake = fakeCharacters.reduce((accumulator, currentElem, index) => {
+    const insertGroup = Math.floor(index / 10) + 1;
+    accumulator[insertGroup] = accumulator[insertGroup] || []
+    accumulator[insertGroup].push(currentElem);
+    return accumulator;
+  }, []);
+
+  groupedFake.forEach((element: any) => {
+    knex.transaction((trx) => {
+      knex(config.character)
+      .transacting(trx)
+      .insert(element)
+      .then(trx.commit)
+      .catch(trx.rollback);
+    })
+    .catch((err) => console.error(err));
+  });
 }
 
 const createFakeCharacter = (id: number) => ({
