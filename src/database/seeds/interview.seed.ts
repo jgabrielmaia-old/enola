@@ -1,13 +1,13 @@
 import * as Knex from "knex";
-import * as faker from "faker";
 import { config } from "../../app";
+import { createInterview } from "../../utils/Utils";
 
 export async function seed(knex: Knex): Promise<any> {
   const fakeInterviews = [];
   const desiredCharacters = 10;
 
   for (let index = 1; index <= desiredCharacters; index++) {
-    fakeInterviews.push(createFakeInterview(index));
+    fakeInterviews.push(createInterview(index));
   }
    
   const groupedFake = fakeInterviews
@@ -29,8 +29,3 @@ export async function seed(knex: Knex): Promise<any> {
     .catch((err) => console.error(err));
   });
 }
-
-const createFakeInterview = (id: number) => ({
-  [`${config.character}_id`]: id,
-  transcript: faker.lorem.paragraph()
-});

@@ -1,14 +1,13 @@
 import * as Knex from "knex";
-import * as faker from "faker";
 import { config } from "../../app";
-import { dateToInt } from "../../utils/Utils";
+import { createScenario} from "../../utils/Utils";
 
 export async function seed(knex: Knex): Promise<any> {
   const fakeScenarios = [];
   const desiredScenarios = config.generation;
 
   for (let index = 0; index < desiredScenarios; index++) {
-    fakeScenarios.push(createFakeScenario());
+    fakeScenarios.push(createScenario());
   }
 
   const groupedFake = fakeScenarios
@@ -30,9 +29,3 @@ export async function seed(knex: Knex): Promise<any> {
     .catch((err) => console.error(err));
   });
 }
-
-const createFakeScenario = () => ({
-  date: dateToInt(faker.date.past()),
-  description: faker.lorem.paragraph(),
-  city: faker.address.city()
-});

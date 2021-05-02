@@ -3,15 +3,15 @@ import { config } from '../../app'
 
 export async function up(knex: Knex) {
   return knex.schema
-    .createTable(config.license, createLicense)
-    .createTable(config.character, createCharacter)
-    .createTable(config.club, createClub)
-    .createTable(config.eventLog, createEventLog)
+    .createTable(config.license, createTableLicense)
+    .createTable(config.character, createTableCharacter)
+    .createTable(config.club, createTableClub)
+    .createTable(config.eventLog, createTableEventLog)
     .createTable(config.interview, createInterview)
-    .createTable(config.clubCheckIn, createClubCheckIn)
-    .createTable(config.scenario, createScenario)
-    .createTable(config.ranking, createRanking)
-    .createTable(config.solution, createSolution);
+    .createTable(config.clubCheckin, createTableClubCheckin)
+    .createTable(config.scenario, createTableScenario)
+    .createTable(config.ranking, createTableRanking)
+    .createTable(config.solution, createTableSolution);
 }
 
 export async function down(knex: Knex) {
@@ -19,7 +19,7 @@ export async function down(knex: Knex) {
     .dropTable(config.solution)
     .dropTable(config.ranking)
     .dropTable(config.scenario)
-    .dropTable(config.clubCheckIn)
+    .dropTable(config.clubCheckin)
     .dropTable(config.interview)
     .dropTable(config.eventLog)
     .dropTable(config.club)
@@ -27,7 +27,7 @@ export async function down(knex: Knex) {
     .dropTable(config.license);
 }
 
-function createLicense(table : any) {
+function createTableLicense(table: any) {
   table.increments("id").primary();
   table.integer("age").notNullable();
   table.integer("height").notNullable();
@@ -39,7 +39,7 @@ function createLicense(table : any) {
   table.string("car_model").notNullable();
 }
 
-function createCharacter(table : any) {
+function createTableCharacter(table: any) {
   table.increments("id").primary();
   table.string("name").notNullable();
   table.integer(`${config.license}_id`).references("id").inTable(config.license);
@@ -48,7 +48,7 @@ function createCharacter(table : any) {
   table.integer("ssn").notNullable();
 }
 
-function createClub(table: any) {
+function createTableClub(table: any) {
   table.increments("id").primary();
   table.integer(`${config.character}_id`).references("id").inTable(config.character);
   table.string("name").notNullable();
@@ -56,7 +56,7 @@ function createClub(table: any) {
   table.string("membership_status").notNullable();
 }
 
-function createEventLog(table: any) {
+function createTableEventLog(table: any) {
   table.increments("id").primary();
   table.integer(`${config.character}_id`).references("id").inTable(config.character);
   table.string("event_name").notNullable();
@@ -69,25 +69,25 @@ function createInterview(table: any) {
   table.string("transcript").notNullable();
 }
 
-function createClubCheckIn(table: any) {
+function createTableClubCheckin(table: any) {
   table.integer(`${config.club}_id`).references("id").inTable(config.character).primary();
   table.integer("check_in_date").notNullable();
   table.integer("check_in_time").notNullable();
   table.integer("check_out_time").notNullable();
 }
 
-function createScenario(table: any) {
+function createTableScenario(table: any) {
   table.integer("date").primary();
   table.string("description").notNullable();
   table.string("city").notNullable();
 }
 
-function createRanking(table: any) {
+function createTableRanking(table: any) {
   table.integer("ssn").references("ssn").inTable(config.character);
   table.integer("annual_income").notNullable();
 }
 
-function createSolution(table: any) {
+function createTableSolution(table: any) {
   table.integer("user").notNullable();
   table.string("value").notNullable();
 }
