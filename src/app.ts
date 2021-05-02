@@ -1,4 +1,4 @@
-import { textTemplating } from "./app/textTemplating"
+import { textTemplating } from "./app/text-templating/text-templating"
 
 export const config = {
     license: "driver_license",

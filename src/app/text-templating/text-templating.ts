@@ -1,6 +1,6 @@
 import * as faker from "faker";
 import { ITemplate } from "./itemplate";
-import { load } from "./stateMgmt";
+import { load } from "../state-management";
 
 export const textTemplating = (schema: string): Array<string> => {
     const templates: ITemplate[] = load(schema);
