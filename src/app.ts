@@ -1,3 +1,5 @@
+import { textTemplating } from "./app/textTemplating"
+
 export const config = {
     license: "driver_license",
     character: "person",
@@ -10,3 +12,5 @@ export const config = {
     solution: "solution",
     generation: 10000
 }
+
+console.log(textTemplating(__dirname + "/../conf/templates/template_sample.json"))

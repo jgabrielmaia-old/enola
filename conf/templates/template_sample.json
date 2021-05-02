@@ -1,0 +1,19 @@
+[
+    {
+        "base_quote": "{attr1} {attr2} {attr3}",
+        "entities": [
+            {
+                "name": "attr1",
+                "options": ["banana","apple","juice"]
+            },
+            {
+                "name": "attr2",
+                "options": ["monument","ornament","segment"]
+            },
+            {
+                "name": "attr3",
+                "options": ["even","odd","pair"]
+            }
+        ]
+    }
+]
