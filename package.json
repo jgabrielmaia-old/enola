@@ -7,7 +7,8 @@
     "start": "ts-node-dev src/app.ts",
     "latest": "knex migrate:latest --knexfile knexfile.ts migrate:latest",
     "seed": "knex --knexfile knexfile.ts seed:run",
-    "format": "prettier 'src/**/*.ts' --write"
+    "format": "prettier 'src/**/*.ts' --write",
+    "enola": "npm run latest && npm run seed && npm run start"
   },
   "keywords": [],
   "author": "",
