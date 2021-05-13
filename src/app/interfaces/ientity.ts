@@ -1,4 +1,4 @@
 export interface IEntity {
-    name: string,
-    options: string[]
+  name: string;
+  options: string[];
 }

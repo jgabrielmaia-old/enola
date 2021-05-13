@@ -1,6 +1,6 @@
 import * as Knex from "knex";
-import { config } from "../../app";
-import { createEventLog } from "../../utils/Utils";
+import { schemaConfig } from "../../app/schema/schema";
+import { createEventLog } from "../../utils/Fake";
 
 export async function seed(knex: Knex): Promise<any> {
   const fakeEventLogs = [];
@@ -10,23 +10,27 @@ export async function seed(knex: Knex): Promise<any> {
     fakeEventLogs.push(createEventLog(index));
   }
 
-  await knex(config.eventLog).insert(fakeEventLogs);
+  await knex(schemaConfig.eventLog).insert(fakeEventLogs);
 
-  const groupedFake = fakeEventLogs.reduce((accumulator, currentElem, index) => {
-    const insertGroup = Math.floor(index / 10) + 1;
-    accumulator[insertGroup] = accumulator[insertGroup] || []
-    accumulator[insertGroup].push(currentElem);
-    return accumulator;
-  }, []);
+  const groupedFake = fakeEventLogs.reduce(
+    (accumulator, currentElem, index) => {
+      const insertGroup = Math.floor(index / 10) + 1;
+      accumulator[insertGroup] = accumulator[insertGroup] || [];
+      accumulator[insertGroup].push(currentElem);
+      return accumulator;
+    },
+    []
+  );
 
   groupedFake.forEach((element: any) => {
-    knex.transaction((trx) => {
-      knex(config.eventLog)
-        .transacting(trx)
-        .insert(element)
-        .then(trx.commit)
-        .catch(trx.rollback);
-    })
+    knex
+      .transaction((trx) => {
+        knex(schemaConfig.eventLog)
+          .transacting(trx)
+          .insert(element)
+          .then(trx.commit)
+          .catch(trx.rollback);
+      })
       .catch((err) => console.error(err));
   });
 }

@@ -6,7 +6,8 @@
   "scripts": {
     "start": "ts-node-dev src/app.ts",
     "latest": "knex migrate:latest --knexfile knexfile.ts migrate:latest",
-    "seed": "knex --knexfile knexfile.ts seed:run"
+    "seed": "knex --knexfile knexfile.ts seed:run",
+    "format": "prettier 'src/**/*.ts' --write"
   },
   "keywords": [],
   "author": "",
@@ -14,6 +15,7 @@
   "devDependencies": {
     "@types/faker": "^5.5.3",
     "@types/node": "^14.14.37",
+    "prettier": "^2.3.0",
     "ts-node": "^9.1.1",
     "ts-node-dev": "^1.1.6",
     "tslint": "^5.20.1",

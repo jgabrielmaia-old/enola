@@ -1,30 +1,33 @@
 import Knex from "knex";
-import { config } from '../../app'
+import { schemaConfig } from "../../app/schema/schema";
+import { load } from "../../app/state-management";
+
+const config = load(__dirname + "/../../../conf/tables.json")
 
 export async function up(knex: Knex) {
   return knex.schema
-    .createTable(config.license, createTableLicense)
-    .createTable(config.character, createTableCharacter)
-    .createTable(config.club, createTableClub)
-    .createTable(config.eventLog, createTableEventLog)
-    .createTable(config.interview, createInterview)
-    .createTable(config.clubCheckin, createTableClubCheckin)
-    .createTable(config.scenario, createTableScenario)
-    .createTable(config.ranking, createTableRanking)
-    .createTable(config.solution, createTableSolution);
+    .createTable(schemaConfig.license, createTableLicense)
+    .createTable(schemaConfig.character, createTableCharacter)
+    .createTable(schemaConfig.club, createTableClub)
+    .createTable(schemaConfig.eventLog, createTableEventLog)
+    .createTable(schemaConfig.interview, createInterview)
+    .createTable(schemaConfig.clubCheckin, createTableClubCheckin)
+    .createTable(schemaConfig.scenario, createTableScenario)
+    .createTable(schemaConfig.ranking, createTableRanking)
+    .createTable(schemaConfig.solution, createTableSolution);
 }
 
 export async function down(knex: Knex) {
   return knex.schema
-    .dropTable(config.solution)
-    .dropTable(config.ranking)
-    .dropTable(config.scenario)
-    .dropTable(config.clubCheckin)
-    .dropTable(config.interview)
-    .dropTable(config.eventLog)
-    .dropTable(config.club)
-    .dropTable(config.character)
-    .dropTable(config.license);
+    .dropTable(schemaConfig.solution)
+    .dropTable(schemaConfig.ranking)
+    .dropTable(schemaConfig.scenario)
+    .dropTable(schemaConfig.clubCheckin)
+    .dropTable(schemaConfig.interview)
+    .dropTable(schemaConfig.eventLog)
+    .dropTable(schemaConfig.club)
+    .dropTable(schemaConfig.character)
+    .dropTable(schemaConfig.license);
 }
 
 function createTableLicense(table: any) {
@@ -42,7 +45,10 @@ function createTableLicense(table: any) {
 function createTableCharacter(table: any) {
   table.increments("id").primary();
   table.string("name").notNullable();
-  table.integer(`${config.license}_id`).references("id").inTable(config.license);
+  table
+    .integer(`${config.license}_id`)
+    .references("id")
+    .inTable(schemaConfig.license);
   table.integer("address_number").notNullable();
   table.string("address_street_name").notNullable();
   table.integer("ssn").notNullable();
@@ -50,7 +56,10 @@ function createTableCharacter(table: any) {
 
 function createTableClub(table: any) {
   table.increments("id").primary();
-  table.integer(`${config.character}_id`).references("id").inTable(config.character);
+  table
+    .integer(`${config.character}_id`)
+    .references("id")
+    .inTable(schemaConfig.character);
   table.string("name").notNullable();
   table.integer("membership_start_date").notNullable();
   table.string("membership_status").notNullable();
@@ -58,19 +67,29 @@ function createTableClub(table: any) {
 
 function createTableEventLog(table: any) {
   table.increments("id").primary();
-  table.integer(`${config.character}_id`).references("id").inTable(config.character);
+  table
+    .integer(`${config.character}_id`)
+    .references("id")
+    .inTable(schemaConfig.character);
   table.string("event_name").notNullable();
   table.integer("event_date").notNullable();
 }
 
 function createInterview(table: any) {
   table.increments("id").primary();
-  table.integer(`${config.character}_id`).references("id").inTable(config.character);
+  table
+    .integer(`${config.character}_id`)
+    .references("id")
+    .inTable(schemaConfig.character);
   table.string("transcript").notNullable();
 }
 
 function createTableClubCheckin(table: any) {
-  table.integer(`${config.club}_id`).references("id").inTable(config.character).primary();
+  table
+    .integer(`${config.club}_id`)
+    .references("id")
+    .inTable(schemaConfig.character)
+    .primary();
   table.integer("check_in_date").notNullable();
   table.integer("check_in_time").notNullable();
   table.integer("check_out_time").notNullable();
@@ -83,7 +102,7 @@ function createTableScenario(table: any) {
 }
 
 function createTableRanking(table: any) {
-  table.integer("ssn").references("ssn").inTable(config.character);
+  table.integer("ssn").references("ssn").inTable(schemaConfig.character);
   table.integer("annual_income").notNullable();
 }
 
