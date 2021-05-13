@@ -10,6 +10,8 @@ export async function seed(knex: Knex): Promise<any> {
     fakeLicenses.push(createLicense());
   }
 
+  console.log(fakeLicenses)
+
   const groupedFake = fakeLicenses.reduce((accumulator, currentElem, index) => {
     const insertGroup = Math.floor(index / 10) + 1;
     accumulator[insertGroup] = accumulator[insertGroup] || [];
