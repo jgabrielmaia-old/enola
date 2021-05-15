@@ -10,22 +10,5 @@ export async function seed(knex: Knex): Promise<any> {
     fakeClubs.push(createClub(index));
   }
 
-  const groupedFake = fakeClubs.reduce((accumulator, currentElem, index) => {
-    const insertGroup = Math.floor(index / 10) + 1;
-    accumulator[insertGroup] = accumulator[insertGroup] || [];
-    accumulator[insertGroup].push(currentElem);
-    return accumulator;
-  }, []);
-
-  groupedFake.forEach((element: any) => {
-    knex
-      .transaction((trx) => {
-        knex(schemaConfig.club)
-          .transacting(trx)
-          .insert(element)
-          .then(trx.commit)
-          .catch(trx.rollback);
-      })
-      .catch((err) => console.error(err));
-  });
+  await knex(schemaConfig.club).insert(fakeClubs);
 }

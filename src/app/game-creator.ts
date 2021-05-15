@@ -7,6 +7,4 @@ export const gamefy = async () => {
   const licenseId_1 = await insert(licenseData_1, schemaConfig.license);
   const witness_1 = createCharacter(licenseId_1);
   const witnessId_1 = await insert(witness_1, schemaConfig.character);
-
-  console.log(witnessId_1);
 };

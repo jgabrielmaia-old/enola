@@ -4,33 +4,11 @@ import { createEventLog } from "../../utils/Fake";
 
 export async function seed(knex: Knex): Promise<any> {
   const fakeEventLogs = [];
-  const desiredEventLogs = 10;
+  const desiredEventLogs = schemaConfig.generation;
 
   for (let index = 1; index <= desiredEventLogs; index++) {
     fakeEventLogs.push(createEventLog(index));
   }
 
   await knex(schemaConfig.eventLog).insert(fakeEventLogs);
-
-  const groupedFake = fakeEventLogs.reduce(
-    (accumulator, currentElem, index) => {
-      const insertGroup = Math.floor(index / 10) + 1;
-      accumulator[insertGroup] = accumulator[insertGroup] || [];
-      accumulator[insertGroup].push(currentElem);
-      return accumulator;
-    },
-    []
-  );
-
-  groupedFake.forEach((element: any) => {
-    knex
-      .transaction((trx) => {
-        knex(schemaConfig.eventLog)
-          .transacting(trx)
-          .insert(element)
-          .then(trx.commit)
-          .catch(trx.rollback);
-      })
-      .catch((err) => console.error(err));
-  });
 }

@@ -96,7 +96,8 @@ function createTableClubCheckin(table: any) {
 }
 
 function createTableScenario(table: any) {
-  table.integer("date").primary();
+  table.integer("id").primary();
+  table.integer("date").notNullable();
   table.string("description").notNullable();
   table.string("city").notNullable();
 }
