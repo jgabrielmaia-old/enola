@@ -1,18 +1,43 @@
 [
     {
-        "base_quote": "{attr1} {attr2} {attr3}",
+        "base_quote": "A crime has taken place and the detective needs your help. The detective gave you the crime scene report, but you somehow lost it. You vaguely remember that the crime was a {CRIME_TYPE} that occurred sometime on ​{DATE}​ and that it took place in {PLACE}. Start by retrieving the corresponding crime scene report from the police department’s database.",
         "entities": [
             {
-                "name": "attr1",
-                "options": ["banana","apple","juice"]
+                "name": "CRIME_TYPE",
+                "options": [
+                    "murder",
+                    "robbery",
+                    "arson",
+                    "burglary"
+                ]
             },
             {
-                "name": "attr2",
-                "options": ["monument","ornament","segment"]
+                "name": "DATE",
+                "type": "monthDay"
             },
             {
-                "name": "attr3",
-                "options": ["even","odd","pair"]
+                "name": "PLACE",
+                "type": "companyName"
+            }
+        ]
+    },
+    {
+        "base_quote": "Security footage shows that there were 2 witnesses. The first witness lives at the {POSITION} house on {STREETNAME}. The other named {NAME}, lives somewhere on {STREETNAME}.",
+        "entities": [
+            {
+                "name": "STREETNAME",
+                "type": "streetname"
+            },
+            {
+                "name": "NAME",
+                "type": "name"
+            },
+            {
+                "name": "POSITION",
+                "options": [
+                    "first",
+                    "last"
+                ]
             }
         ]
     }

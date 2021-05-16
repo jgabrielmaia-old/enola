@@ -2,8 +2,8 @@ import * as faker from "faker";
 import { ITemplate } from "../interfaces/itemplate";
 import { load } from "../state-management";
 
-export const textTemplating = (schema: string): Array<string> => {
-  const templates: ITemplate[] = load(schema);
+export const textTemplating = (template: string): Array<string> => {
+  const templates: ITemplate[] = load(template);
   const quotes = Array<string>();
 
   for (let index = 0; index < templates.length; index++) {
@@ -11,8 +11,12 @@ export const textTemplating = (schema: string): Array<string> => {
     const entities = templates[index].entities;
 
     for (let entity of entities) {
-      const option = faker.random.arrayElement(entity.options);
-      quote = quote.replace(`{${entity.name}}`, option);
+
+      if (entity.options) {
+        quote = quote.replace(`{${entity.name}}`, faker.random.arrayElement(entity.options));
+      } else {
+        quote = transformQuote(entity.type, entity.name, quote);
+      }
     }
 
     quotes[index] = quote;
@@ -20,3 +24,18 @@ export const textTemplating = (schema: string): Array<string> => {
 
   return quotes;
 };
+
+const transformQuote = (type: string, property: string, quote: string): string => {
+  switch (type) {
+    case "streetname":
+      quote = quote.replace(`{${property}}`, faker.address.streetName());
+    case "name":
+      quote = quote.replace(`{${property}}`, `${faker.name.firstName()} ${faker.name.lastName()}`);
+    case "monthDay":
+      quote = quote.replace(`{${property}}`, `${faker.date.month({ abbr: true })} ${faker.datatype.number({ min: 1, max: 28 })}`);
+    case "companyName":
+      quote = quote.replace(`{${property}}`, `${faker.name.firstName()}`);
+  }
+
+  return quote;
+}

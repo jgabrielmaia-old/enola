@@ -1,15 +1,14 @@
 import { createCharacter, createLicense, createClubMembership, createClubCheckins } from "../utils/fake";
 import { insert } from "./repository/repository";
 import { schemaConfig } from "./schema/schema";
+import { load } from "./state-management";
+import { textTemplating } from "./text-templating/text-templating";
 
 export const gamefy = async () => {
-  const villain = await makeTargetCharacter();
-  
-  const witness_1 = await makeSourceCharacter(); 
-  console.log(witness_1);
+  console.log(textTemplating(__dirname + "/../../conf/templates/template_sample.json"))
 };
 
-const makeSourceCharacter : any = async () => {
+const makeSourceCharacter: any = async () => {
   const licenseId = await insert(createLicense(), schemaConfig.license);
   const character = createCharacter(licenseId);
   const characterId = await insert(character, schemaConfig.character);
