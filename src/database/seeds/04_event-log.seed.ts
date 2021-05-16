@@ -1,6 +1,6 @@
 import * as Knex from "knex";
 import { schemaConfig } from "../../app/schema/schema";
-import { createEventLog } from "../../utils/Fake";
+import { createEventLog } from "../../utils/fake";
 
 export async function seed(knex: Knex): Promise<any> {
   const fakeEventLogs = [];

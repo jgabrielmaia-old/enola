@@ -5,7 +5,7 @@ import {
   eventName,
   random_time,
   random_training_time,
-} from "./Utils";
+} from "./utils";
 
 export const createCharacter = (id: number) => ({
   name: faker.fake("{{name.firstName}} {{name.lastName}}"),
@@ -15,16 +15,25 @@ export const createCharacter = (id: number) => ({
   ssn: faker.phone.phoneNumber("#########"),
 });
 
-export const createClubCheckins = (id: number) => ({
+export const createClubCheckin = (id: number) => ({
   [`${schemaConfig.club}_id`]: id,
   check_in_date: dateToInt(faker.date.past()),
   check_in_time: random_time(),
   check_out_time: random_time() + random_training_time(),
 });
 
-export const createClub = (id: number) => ({
+export const createClubCheckins = (id: number) => {
+  const fakeClubCheckins = [];
+
+  for (let i = 0; i < faker.datatype.number({ min: 3, max: 10 }); i++) {
+    fakeClubCheckins.push(createClubCheckin(id));
+  }
+
+  return fakeClubCheckins;
+}
+
+export const createClubMembership = (id: number) => ({
   [`${schemaConfig.character}_id`]: id,
-  name: faker.company.companyName(),
   membership_start_date: dateToInt(faker.date.past()),
   membership_status: faker.random.arrayElement([
     "active",

@@ -1,6 +1,6 @@
 import * as Knex from "knex";
 import { schemaConfig } from "../../app/schema/schema";
-import { createInterview } from "../../utils/Fake";
+import { createInterview } from "../../utils/fake";
 
 export async function seed(knex: Knex): Promise<any> {
   const fakeInterviews = [];

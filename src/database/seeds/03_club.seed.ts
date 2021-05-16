@@ -1,14 +1,14 @@
 import * as Knex from "knex";
 import { schemaConfig } from "../../app/schema/schema";
-import { createClub } from "../../utils/Fake";
+import { createClubMembership } from "../../utils/fake";
 
 export async function seed(knex: Knex): Promise<any> {
-  const fakeClubs = [];
+  const fakeClubMemberships = [];
   const desiredClubs = schemaConfig.generation;
 
   for (let index = 1; index <= desiredClubs; index++) {
-    fakeClubs.push(createClub(index));
+    fakeClubMemberships.push(createClubMembership(index));
   }
 
-  await knex(schemaConfig.club).insert(fakeClubs);
+  await knex(schemaConfig.club).insert(fakeClubMemberships);
 }

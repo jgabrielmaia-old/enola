@@ -60,7 +60,6 @@ function createTableClub(table: any) {
     .integer(`${config.character}_id`)
     .references("id")
     .inTable(schemaConfig.character);
-  table.string("name").notNullable();
   table.integer("membership_start_date").notNullable();
   table.string("membership_status").notNullable();
 }
@@ -85,11 +84,11 @@ function createInterview(table: any) {
 }
 
 function createTableClubCheckin(table: any) {
+  table.increments("id").primary();
   table
     .integer(`${config.club}_id`)
     .references("id")
-    .inTable(schemaConfig.character)
-    .primary();
+    .inTable(schemaConfig.character);
   table.integer("check_in_date").notNullable();
   table.integer("check_in_time").notNullable();
   table.integer("check_out_time").notNullable();
