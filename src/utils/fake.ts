@@ -16,7 +16,7 @@ export const createCharacter = (id: number) => ({
 });
 
 export const createClubCheckin = (id: number) => ({
-  [`${schemaConfig.club}_id`]: id,
+  [`${schemaConfig.clubMembership}_id`]: id,
   check_in_date: dateToInt(faker.date.past()),
   check_in_time: random_time(),
   check_out_time: random_time() + random_training_time(),

@@ -1,9 +1,10 @@
 import * as faker from "faker";
 import { ITemplate } from "../interfaces/itemplate";
+import { schemaConfig } from "../schema/schema";
 import { load } from "../state-management";
 
-export const textTemplating = (template: string): Array<string> => {
-  const templates: ITemplate[] = load(template);
+export const textTemplating = (): Array<string> => {
+  const templates: ITemplate[] = load(__dirname + "/../../conf/templates/quotes.json");
   const quotes = Array<string>();
 
   for (let index = 0; index < templates.length; index++) {
@@ -35,6 +36,8 @@ const transformQuote = (type: string, property: string, quote: string): string =
       quote = quote.replace(`{${property}}`, `${faker.date.month({ abbr: true })} ${faker.datatype.number({ min: 1, max: 28 })}`);
     case "companyName":
       quote = quote.replace(`{${property}}`, `${faker.name.firstName()}`);
+    case "place":
+      quote = quote.replace(`{${property}}`, schemaConfig.club);
   }
 
   return quote;

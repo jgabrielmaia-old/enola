@@ -8,7 +8,7 @@ export async function up(knex: Knex) {
   return knex.schema
     .createTable(schemaConfig.license, createTableLicense)
     .createTable(schemaConfig.character, createTableCharacter)
-    .createTable(schemaConfig.club, createTableClub)
+    .createTable(schemaConfig.clubMembership, createTableClub)
     .createTable(schemaConfig.eventLog, createTableEventLog)
     .createTable(schemaConfig.interview, createInterview)
     .createTable(schemaConfig.clubCheckin, createTableClubCheckin)
@@ -25,7 +25,7 @@ export async function down(knex: Knex) {
     .dropTable(schemaConfig.clubCheckin)
     .dropTable(schemaConfig.interview)
     .dropTable(schemaConfig.eventLog)
-    .dropTable(schemaConfig.club)
+    .dropTable(schemaConfig.clubMembership)
     .dropTable(schemaConfig.character)
     .dropTable(schemaConfig.license);
 }
@@ -86,7 +86,7 @@ function createInterview(table: any) {
 function createTableClubCheckin(table: any) {
   table.increments("id").primary();
   table
-    .integer(`${config.club}_id`)
+    .integer(`${config.clubMembership}_id`)
     .references("id")
     .inTable(schemaConfig.character);
   table.integer("check_in_date").notNullable();

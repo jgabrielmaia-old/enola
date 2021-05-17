@@ -10,5 +10,5 @@ export async function seed(knex: Knex): Promise<any> {
     fakeClubMemberships.push(createClubMembership(index));
   }
 
-  await knex(schemaConfig.club).insert(fakeClubMemberships);
+  await knex(schemaConfig.clubMembership).insert(fakeClubMemberships);
 }

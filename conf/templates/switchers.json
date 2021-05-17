@@ -1,0 +1,77 @@
+[
+    {
+        "switch": "CRIME",
+        "cases": [
+            {
+                "TYPE": "murder",
+                "ARTICLE": "a",
+                "COMMITER": "murderer",
+                "NOTICE": "heard a gunshot"
+            },
+            {
+                "TYPE": "robbery",
+                "ARTICLE": "a",
+                "COMMITER": "robber",
+                "NOTICE": "heard a person screaming loudly"
+            },
+            {
+                "TYPE": "arson",
+                "ARTICLE": "an",
+                "COMMITER": "arsonist",
+                "NOTICE": "saw a dense smoke coming out of the window"
+            },
+            {
+                "TYPE": "burglary",
+                "ARTICLE": "a",
+                "COMMITER": "burglar",
+                "NOTICE": "heard the alarms go off"
+            },
+            {
+                "TYPE": "theft",
+                "ARTICLE": "a",
+                "COMMITER": "thief",
+                "NOTICE": "saw someone climbing a ladder"
+            }
+        ]
+    },
+    {
+        "switch": "PLACE",
+        "cases": [
+            {
+                "TYPE": "murder",
+                "ARTICLE": "a",
+                "COMMITER": "murderer"
+            },
+            {
+                "TYPE": "robbery",
+                "ARTICLE": "a",
+                "COMMITER": "robber"
+            },
+            {
+                "TYPE": "arson",
+                "ARTICLE": "an",
+                "COMMITER": "arsonist"
+            },
+            {
+                "TYPE": "burglary",
+                "ARTICLE": "a",
+                "COMMITER": "burglar"
+            }
+        ]
+    },
+    {
+        "switch": "GENDER",
+        "cases": [
+            {
+                "TYPE": "woman",
+                "POSSESSIVE": "her",
+                "SUBJECT": "she"
+            },
+            {
+                "TYPE": "man",
+                "POSSESSIVE": "his",
+                "SUBJECT": "he"
+            }
+        ]
+    }
+]

@@ -1,0 +1,133 @@
+[
+    {
+        "name": "description",
+        "base_quote": "A crime has taken place and the detective needs your help. The detective gave you the crime scene report, but you somehow lost it. You vaguely remember that the crime was {ARTICLE} {CRIME_TYPE} that occurred sometime on ​{DATE}​ and that it took place in {CITY}. Start by retrieving the corresponding crime scene report from the police department’s database.",
+        "entities": [
+            {
+                "name": "CRIME_TYPE",
+                "switch": "CRIME.TYPE"
+            },
+            {
+                "name": "DATE",
+                "type": "monthDay"
+            },
+            {
+                "name": "CITY",
+                "type": "city"
+            }
+        ]
+    },
+    {
+        "name": "crime_scene_report",
+        "base_quote": "Security footage shows that there were 2 witnesses. The first witness lives at the {POSITION} house on {STREETNAME}. The other named {NAME}, lives somewhere on {STREETNAME}.",
+        "entities": [
+            {
+                "name": "STREETNAME",
+                "type": "streetname"
+            },
+            {
+                "name": "NAME",
+                "type": "name"
+            },
+            {
+                "name": "POSITION",
+                "options": [
+                    "first",
+                    "last"
+                ]
+            }
+        ]
+    },
+    {
+        "name": "witness_1_interview",
+        "base_quote": "I saw the {CRIME_TYPE} happen, and I recognized the {CRIME_COMMITER} from {PLACE_TYPE} when I was {PLACE_ACTIVITY} last week on {DATE}.",
+        "entities": [
+            {
+                "name": "CRIME_TYPE",
+                "switch": "CRIME.TYPE"
+            },
+            {
+                "name": "CRIME_COMMITER",
+                "switch": "CRIME.COMMITER"
+            },
+            {
+                "name": "PLACE_TYPE",
+                "switch": "PLACE.TYPE"
+            },
+            {
+                "name": "PLACE_ACTIVITY",
+                "switch": "PLACE.ACTIVITY"
+            },
+            {
+                "name": "DATE",
+                "type": "monthDay"
+            }
+        ]
+    },
+    {
+        "name": "witness_2_interview",
+        "base_quote": "I {CRIME_NOTICE} and then saw a {GENDER_TYPE} run out. He had a `{PLACE}` bag. The membership number on the bag started with `{MEMBERSHIP_PARTIAL}`. Only {STATUS} members have those bags. The man got into a car with a plate that included `{PLATE_PARTIAL}`.",
+        "entities": [
+            {
+                "name": "CRIME_NOTICE",
+                "switch": "CRIME.NOTICE"
+            },
+            {
+                "name": "PLACE",
+                "options": "inherit"
+            },
+            {
+                "name": "DATE",
+                "type": "monthDay"
+            },
+            {
+                "name": "GENDER_TYPE",
+                "switch": "GENDER.TYPE"
+            }
+        ]
+    },
+    {
+        "name": "confession",
+        "base_quote": "I was hired by a {GENDER_TYPE} with {INCOME}. I don't know {GENDER_POSSESSIVE} name but I know {GENDER_SUBJECT}'s around {HEIGHT_LOW} or {HEIGHT_HIGH}. She has {HAIR_COLOR} and she drives a {CAR}. I know that {GENDER.SUBJECT} attended the {EVENT} 3 times in {YEAR}.",
+        "entities": [
+            {
+                "name": "GENDER_TYPE",
+                "switch": "GENDER.TYPE"
+            },
+            {
+                "name": "GENDER_SUBJECT",
+                "switch": "GENDER.SUBJECT"
+            },
+            {
+                "name": "GENDER_POSSESSIVE",
+                "switch": "GENDER.POSSESSIVE"
+            },
+            {
+                "name": "GENDER"
+            },
+            {
+                "name": "INCOME",
+                "options": [
+                    "lots of money",
+                    "plenty of bills to pay"
+                ]
+            },
+            {
+                "name": "YEAR",
+                "type": "year"
+            },
+            {
+                "name": "HAIR_COLOR",
+                "type": "color.hair"
+            },
+            {
+                "name": "EVENT",
+                "type": "event"
+            },
+            {
+                "name": "CAR",
+                "type": "car"
+            }
+        ]
+    }
+]
