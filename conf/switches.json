@@ -1,6 +1,6 @@
 [
     {
-        "switch": "CRIME",
+        "name": "CRIME",
         "cases": [
             {
                 "TYPE": "murder",
@@ -35,7 +35,7 @@
         ]
     },
     {
-        "switch": "PLACE",
+        "name": "PLACE",
         "cases": [
             {
                 "TYPE": "murder",
@@ -60,7 +60,7 @@
         ]
     },
     {
-        "switch": "GENDER",
+        "name": "GENDER",
         "cases": [
             {
                 "TYPE": "woman",
