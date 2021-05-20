@@ -4,4 +4,8 @@ import { switcher } from "./app/text-templating/switcher";
 // textTemplating(__dirname +../../../conf/templates/template_sample.json")
 // gamefy();
 
-switcher('CRIME', 'murder', 'ARTICLE');
+console.log(
+    switcher('CRIME', 'ARTICLE'),
+    switcher('CRIME', 'COMMITER'),
+    switcher('CRIME', 'NOTICE'),
+    switcher('CRIME', 'TYPE'));
