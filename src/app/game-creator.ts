@@ -3,8 +3,8 @@ import { insert } from "./repository/repository";
 import { schemaConfig } from "./schema/schema";
 import { textTemplating } from "./text-templating/text-templating";
 
-export const gamefy = async () => {
-  console.log(textTemplating())
+export const gamefy = () => {
+  return textTemplating();
 };
 
 const makeSourceCharacter: any = async () => {

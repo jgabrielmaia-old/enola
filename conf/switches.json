@@ -38,24 +38,8 @@
         "name": "PLACE",
         "cases": [
             {
-                "TYPE": "murder",
-                "ARTICLE": "a",
-                "COMMITER": "murderer"
-            },
-            {
-                "TYPE": "robbery",
-                "ARTICLE": "a",
-                "COMMITER": "robber"
-            },
-            {
-                "TYPE": "arson",
-                "ARTICLE": "an",
-                "COMMITER": "arsonist"
-            },
-            {
-                "TYPE": "burglary",
-                "ARTICLE": "a",
-                "COMMITER": "burglar"
+                "TYPE": "gym",
+                "ACTIVITY": "working out"
             }
         ]
     },
