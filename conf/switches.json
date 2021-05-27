@@ -49,12 +49,14 @@
             {
                 "TYPE": "woman",
                 "POSSESSIVE": "her",
-                "SUBJECT": "she"
+                "SUBJECT": "she",
+                "SUBJECTCAPS": "She"
             },
             {
                 "TYPE": "man",
                 "POSSESSIVE": "his",
-                "SUBJECT": "he"
+                "SUBJECT": "he",
+                "SUBJECTCAPS": "He"
             }
         ]
     }

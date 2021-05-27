@@ -30,6 +30,10 @@
                 "type": "streetname"
             },
             {
+                "name": "STREET_NAME",
+                "type": "streetname"
+            },
+            {
                 "name": "NAME",
                 "type": "name"
             },
@@ -70,7 +74,7 @@
     },
     {
         "name": "witness_2_interview",
-        "base_quote": "I {CRIME_NOTICE} and then saw a {GENDER_TYPE} run out. He had a `{PLACE_TYPE}` bag. The membership number on the bag started with `{MEMBERSHIP_PARTIAL}`. Only {STATUS} members have those bags. The man got into a car with a plate that included `{PLATE_PARTIAL}`.",
+        "base_quote": "I {CRIME_NOTICE} and then saw a {GENDER_TYPE} run out. {GENDER_SUBJECTCAPS} had a {PLACE_TYPE} bag. The membership number on the bag {MEMBERSHIP_PARTIAL_REF} `{MEMBERSHIP_PARTIAL_VAL}`. Only {STATUS} members have those bags. The {GENDER_TYPE} got into a car with a plate that included `{PLATE_PARTIAL}`.",
         "entities": [
             {
                 "name": "CRIME_NOTICE",
@@ -85,18 +89,38 @@
                 "switcher": "GENDER.TYPE"
             },
             {
+                "name": "GENDER_TYPE",
+                "switcher": "GENDER.TYPE"
+            },
+            {
+                "name": "GENDER_SUBJECTCAPS",
+                "switcher": "GENDER.SUBJECTCAPS"
+            },
+            {
                 "name": "STATUS",
                 "options": [
                     "silver",
                     "gold",
                     "platinum"
                 ]
+            },
+            {
+                "name": "MEMBERSHIP_PARTIAL_REF",
+                "partial": "MEMBERSHIP.REFERENCE"
+            },
+            {
+                "name": "MEMBERSHIP_PARTIAL_VAL",
+                "partial": "MEMBERSHIP.VALUE"
+            },
+            {
+                "name": "PLATE_PARTIAL",
+                "partial": "PLATE.VALUE"
             }
         ]
     },
     {
         "name": "confession",
-        "base_quote": "I was hired by a {GENDER_TYPE} with {INCOME}. I don't know {GENDER_POSSESSIVE} name but I know {GENDER_SUBJECT}'s around {HEIGHT_LOW} or {HEIGHT_HIGH}. She has {HAIR_COLOR} and she drives a {CAR}. I know that {GENDER_SUBJECT} attended the {EVENT} 3 times in {YEAR}.",
+        "base_quote": "I was hired by a {GENDER_TYPE} with {INCOME}. I don't know {GENDER_POSSESSIVE} name but I know {GENDER_SUBJECT}'s around {HEIGHT_LOW} or {HEIGHT_HIGH}. {GENDER_SUBJECTCAPS} has {HAIR_COLOR} and she drives a {CAR}. I know that {GENDER_SUBJECT} attended the {EVENT} 3 times in {YEAR}.",
         "entities": [
             {
                 "name": "GENDER_TYPE",
@@ -105,6 +129,10 @@
             {
                 "name": "GENDER_SUBJECT",
                 "switcher": "GENDER.SUBJECT"
+            },
+            {
+                "name": "GENDER_SUBJECTCAPS",
+                "switcher": "GENDER.SUBJECTCAPS"
             },
             {
                 "name": "GENDER_SUBJECT",

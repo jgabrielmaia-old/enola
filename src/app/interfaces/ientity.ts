@@ -3,4 +3,5 @@ export interface IEntity {
   options?: string[];
   type?: string;
   switcher?: string;
+  partial?: string;
 }
