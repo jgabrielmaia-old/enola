@@ -3,6 +3,7 @@ import { eventName } from "../../utils/utils";
 import { ITemplate } from "../interfaces/itemplate";
 import { schemaConfig } from "../schema/schema";
 import { load } from "../state-management";
+import { referenceDate, witnessDate } from "./dateHandler";
 import { partial } from "./partial";
 import { switcher } from "./switcher";
 
@@ -54,9 +55,12 @@ const transformQuote = (entity: any, quote: string): string => {
       case "name":
         quote = quote.replace(`{${entity.name}}`, `${faker.name.firstName()} ${faker.name.lastName()}`);
         break;
-      case "monthDay":
-        quote = quote.replace(`{${entity.name}}`, `${faker.date.month({ abbr: true })} ${faker.datatype.number({ min: 1, max: 28 })}`);
+      case "witnessDate":
+        quote = quote.replace(`{${entity.name}}`, witnessDate());
         break;
+      case "referenceDate":
+        quote = quote.replace(`{${entity.name}}`, referenceDate());
+        break;  
       case "companyName":
         quote = quote.replace(`{${entity.name}}`, `${faker.name.firstName()}`);
         break;

@@ -13,7 +13,7 @@
             },
             {
                 "name": "DATE",
-                "type": "monthDay"
+                "type": "referenceDate"
             },
             {
                 "name": "CITY",
@@ -48,7 +48,7 @@
     },
     {
         "name": "witness_1_interview",
-        "base_quote": "I saw the {CRIME_TYPE} happen, and I recognized the {CRIME_COMMITER} from {PLACE_TYPE} when I was {PLACE_ACTIVITY} last week on {DATE}.",
+        "base_quote": "I saw the {CRIME_TYPE} happen, and I recognized the {CRIME_COMMITER} from {PLACE_TYPE} when I was {PLACE_ACTIVITY} on {DATE}.",
         "entities": [
             {
                 "name": "CRIME_TYPE",
@@ -68,7 +68,7 @@
             },
             {
                 "name": "DATE",
-                "type": "monthDay"
+                "type": "witnessDate"
             }
         ]
     },
