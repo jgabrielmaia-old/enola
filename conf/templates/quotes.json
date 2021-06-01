@@ -120,7 +120,7 @@
     },
     {
         "name": "confession",
-        "base_quote": "I was hired by a {GENDER_TYPE} with {INCOME}. I don't know {GENDER_POSSESSIVE} name but I know {GENDER_SUBJECT}'s around {HEIGHT_LOW} or {HEIGHT_HIGH}. {GENDER_SUBJECTCAPS} has {HAIR_COLOR} and she drives a {CAR}. I know that {GENDER_SUBJECT} attended the {EVENT} 3 times in {YEAR}.",
+        "base_quote": "I was hired by a {GENDER_TYPE} with {INCOME}. I don't know {GENDER_POSSESSIVE} name but I know {GENDER_SUBJECT}'s around {HEIGHT_LOW} or {HEIGHT_HIGH}. {GENDER_SUBJECTCAPS} has {HAIR_COLOR} hair and she drives a {CAR}. I know that {GENDER_SUBJECT} attended the {EVENT} 3 times in {YEAR}.",
         "entities": [
             {
                 "name": "GENDER_TYPE",
@@ -173,11 +173,11 @@
             },
             {
                 "name": "HEIGHT_HIGH",
-                "type": "low_height"
+                "type": "high_height"
             },
             {
                 "name": "HEIGHT_LOW",
-                "type": "high_height"
+                "type": "low_height"
             }
         ]
     }
