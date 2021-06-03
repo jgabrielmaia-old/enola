@@ -2,7 +2,7 @@ import Knex from "knex";
 import { schemaConfig } from "../../app/schema/schema";
 import { load } from "../../app/state-management";
 
-const config = load(__dirname + "/../../../conf/tables.json")
+const config = load(__dirname + "/../../../conf/context.json")
 
 export async function up(knex: Knex) {
   return knex.schema
