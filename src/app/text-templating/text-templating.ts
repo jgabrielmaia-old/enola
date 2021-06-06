@@ -1,5 +1,7 @@
 import * as faker from "faker";
 import { eventName } from "../../utils/utils";
+import { IContext } from "../interfaces/icontext";
+import { IEntity } from "../interfaces/ientity";
 import { ITemplate } from "../interfaces/itemplate";
 import { schemaConfig } from "../schema/schema";
 import { load } from "../state-management";
@@ -7,89 +9,129 @@ import { referenceDate, witnessDate } from "./dateHandler";
 import { partial } from "./partial";
 import { switcher } from "./switcher";
 
-export const textTemplating = (): Array<string> => {
+export const textTemplating = (contextAttributes: IContext[]): Array<string> => {
   const templates: ITemplate[] = load(process.cwd() + `/conf/templates/quotes.json`);
-  const quotes = Array<string>();
+  const quotes = Array<any>();
 
   for (let index = 0; index < templates.length; index++) {
     let quote = templates[index].base_quote;
+    const name = templates[index].name;
     const entities = templates[index].entities;
 
     for (let entity of entities) {
+      let element : any;
 
       if (entity.options) {
-        quote = quote.replace(`{${entity.name}}`, faker.random.arrayElement(entity.options));
+        element = faker.random.arrayElement(entity.options);
       } else {
-        quote = transformQuote(entity, quote);
+        element = whichElement(entity, quote);    
       }
+      
+      if(entity.context) {
+        addAttributes(templates[index].name, entity, element, contextAttributes);
+      }
+      
+      quote = quote.replace(`{${entity.name}}`, element);
     }
 
-    quotes[index] = quote;
+    quotes[index] = {quote, name};
   }
 
   return quotes;
 };
 
-const transformQuote = (entity: any, quote: string): string => {
+const whichElement = (entity: any, quote: string): string => {
   if (entity.switcher) {
     const [switcherName, caseProperty] = entity.switcher.split('.');
-    quote = quote.replace(`{${entity.name}}`, switcher(switcherName, caseProperty));
+    return switcher(switcherName, caseProperty);
   }
   else if (entity.partial) {
     const [partialName, partialProperty] = entity.partial.split('.');
     const partialInfo = partial(partialName);
 
-    switch (partialProperty) {
-      case "REFERENCE":
-        quote = quote.replace(`{${entity.name}}`, partialInfo.reference);
-      case "VALUE":
-        quote = quote.replace(`{${entity.name}}`, partialInfo.chopped);
-    }
+    return whichPartialInfo(partialInfo, partialProperty);
 
   }
   else {
+    let element : any;
     switch (entity.type) {
       case "streetname":
-        quote = quote.replace(`{${entity.name}}`, faker.address.streetName());
+        element = faker.address.streetName();
         break;
       case "name":
-        quote = quote.replace(`{${entity.name}}`, `${faker.name.firstName()} ${faker.name.lastName()}`);
+        element = `${faker.name.firstName()} ${faker.name.lastName()}`;
         break;
       case "witnessDate":
-        quote = quote.replace(`{${entity.name}}`, witnessDate());
+        element = witnessDate();
         break;
       case "referenceDate":
-        quote = quote.replace(`{${entity.name}}`, referenceDate());
+        element = referenceDate();
         break;  
       case "companyName":
-        quote = quote.replace(`{${entity.name}}`, `${faker.name.firstName()}`);
+        element = faker.name.firstName();
         break;
       case "place":
-        quote = quote.replace(`{${entity.name}}`, schemaConfig.club);
+        element = schemaConfig.club;
         break;
       case "city":
-        quote = quote.replace(`{${entity.name}}`, faker.address.city());
+        element = faker.address.city();
         break;
       case "event":
-        quote = quote.replace(`{${entity.name}}`, eventName());
+        element = eventName();
         break;
       case "year":
-        quote = quote.replace(`{${entity.name}}`, (new Date().getFullYear() - 1).toString());
+        element = (new Date().getFullYear() - 1).toString();
         break;
       case "hairColor":
-        quote = quote.replace(`{${entity.name}}`, (new Date().getFullYear() - 1).toString());
+        element = (new Date().getFullYear() - 1).toString();
         break;
       case "car":
-        quote = quote.replace(`{${entity.name}}`, faker.vehicle.vehicle());
+        element =  `${faker.vehicle.manufacturer()} ${faker.vehicle.model()}`;
         break;
       case "low_height":
-        quote = quote.replace(`{${entity.name}}`, faker.datatype.number({ min: 150, max: 160 }).toString());
+        element = faker.datatype.number({ min: 163, max: 168 }).toString();
         break;
       case "high_height":
-        quote = quote.replace(`{${entity.name}}`, faker.datatype.number({ min: 170, max: 190 }).toString());
+        element = faker.datatype.number({ min: 171, max: 178 }).toString();
         break;
     }
-  }
 
-  return quote;
+    return element;
+  }
 }
+
+function addAttributes(name: string, entity: IEntity, element: string, contextAttributes: IContext[]) {
+  if(entity.name == "CAR"){
+    const [carName,carManufacturer] = element.split(" ");
+    
+    contextAttributes.push({
+      context: `${entity.context}_name`,
+      element: carName,
+      name
+    }),
+
+    contextAttributes.push({
+      context: `${entity.context}_manufacturer`,
+      element: carManufacturer,
+      name
+    })
+  }
+  
+  else{
+    contextAttributes.push({
+      context: entity.context,
+      element,
+      name
+    })
+  }
+}
+
+function whichPartialInfo(partialInfo: any, partialProperty: string): string {
+  switch (partialProperty) {
+    case "REFERENCE":
+      return partialInfo.reference;
+    case "VALUE":
+      return partialInfo.chopped;
+  }
+}
+

@@ -1,10 +1,16 @@
 import { createCharacter, createLicense, createClubMembership, createClubCheckins } from "../utils/fake";
+import { consolidateContextAttributes } from "./context-handler/context-handler";
+import { IContext } from "./interfaces/icontext";
 import { insert } from "./repository/repository";
 import { schemaConfig } from "./schema/schema";
 import { textTemplating } from "./text-templating/text-templating";
 
 export const gamefy = () => {
-  return textTemplating();
+  const contextAttributes: IContext[] = [];
+  const quotes = textTemplating(contextAttributes);
+  const consolidatedContextAttributes =  consolidateContextAttributes(contextAttributes);
+
+  return {quotes, consolidatedContextAttributes};
 };
 
 const makeSourceCharacter: any = async () => {

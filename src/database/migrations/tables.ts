@@ -1,14 +1,11 @@
 import Knex from "knex";
 import { schemaConfig } from "../../app/schema/schema";
-import { load } from "../../app/state-management";
-
-const config = load(__dirname + "/../../../conf/context.json")
 
 export async function up(knex: Knex) {
   return knex.schema
     .createTable(schemaConfig.license, createTableLicense)
     .createTable(schemaConfig.character, createTableCharacter)
-    .createTable(schemaConfig.clubMembership, createTableClub)
+    .createTable(schemaConfig.clubMembership, createTableClubMembership)
     .createTable(schemaConfig.eventLog, createTableEventLog)
     .createTable(schemaConfig.interview, createInterview)
     .createTable(schemaConfig.clubCheckin, createTableClubCheckin)
@@ -46,7 +43,7 @@ function createTableCharacter(table: any) {
   table.increments("id").primary();
   table.string("name").notNullable();
   table
-    .integer(`${config.license}_id`)
+    .integer(`${schemaConfig.license}_id`)
     .references("id")
     .inTable(schemaConfig.license);
   table.integer("address_number").notNullable();
@@ -54,10 +51,10 @@ function createTableCharacter(table: any) {
   table.integer("ssn").notNullable();
 }
 
-function createTableClub(table: any) {
+function createTableClubMembership(table: any) {
   table.increments("id").primary();
   table
-    .integer(`${config.character}_id`)
+    .integer(`${schemaConfig.character}_id`)
     .references("id")
     .inTable(schemaConfig.character);
   table.integer("membership_start_date").notNullable();
@@ -67,7 +64,7 @@ function createTableClub(table: any) {
 function createTableEventLog(table: any) {
   table.increments("id").primary();
   table
-    .integer(`${config.character}_id`)
+    .integer(`${schemaConfig.character}_id`)
     .references("id")
     .inTable(schemaConfig.character);
   table.string("event_name").notNullable();
@@ -77,7 +74,7 @@ function createTableEventLog(table: any) {
 function createInterview(table: any) {
   table.increments("id").primary();
   table
-    .integer(`${config.character}_id`)
+    .integer(`${schemaConfig.character}_id`)
     .references("id")
     .inTable(schemaConfig.character);
   table.string("transcript").notNullable();
@@ -86,7 +83,7 @@ function createInterview(table: any) {
 function createTableClubCheckin(table: any) {
   table.increments("id").primary();
   table
-    .integer(`${config.clubMembership}_id`)
+    .integer(`${schemaConfig.clubMembership}_id`)
     .references("id")
     .inTable(schemaConfig.character);
   table.integer("check_in_date").notNullable();
@@ -97,7 +94,8 @@ function createTableClubCheckin(table: any) {
 function createTableScenario(table: any) {
   table.integer("id").primary();
   table.integer("date").notNullable();
-  table.string("description").notNullable();
+  table.string("type").notnullable();
+  table.string("report").notNullable();
   table.string("city").notNullable();
 }
 

@@ -27,7 +27,7 @@ const capitalizeFirstLetter = (str: String) => {
   return str.charAt(0).toUpperCase() + str.slice(1);
 };
 
-const pad = (n: Number) => {
+export const pad = (n: Number) => {
   let numberString = n.toString();
   return numberString.length >= 2
     ? n

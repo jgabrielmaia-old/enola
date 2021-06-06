@@ -5,7 +5,8 @@
         "entities": [
             {
                 "name": "CRIME_TYPE",
-                "switcher": "CRIME.TYPE"
+                "switcher": "CRIME.TYPE",
+                "context": "scenario.type"
             },
             {
                 "name": "CRIME_ARTICLE",
@@ -13,42 +14,48 @@
             },
             {
                 "name": "DATE",
-                "type": "referenceDate"
+                "type": "referenceDate",
+                "context": "scenario.date"
             },
             {
                 "name": "CITY",
-                "type": "city"
+                "type": "city",
+                "context": "scenario.city"
             }
         ]
     },
     {
         "name": "crime_scene_report",
-        "base_quote": "Security footage shows that there were 2 witnesses. The first witness lives at the {POSITION} house on {STREET_NAME}. The other named {NAME}, lives somewhere on {STREET_NAME}.",
+        "base_quote": "Security footage shows that there were 2 witnesses. The first witness lives at the {POSITION_1} house on {STREET_NAME_1}. The other named {NAME_2}, lives somewhere on {STREET_NAME_2}.",
         "entities": [
             {
-                "name": "STREET_NAME",
-                "type": "streetname"
-            },
-            {
-                "name": "STREET_NAME",
-                "type": "streetname"
-            },
-            {
-                "name": "NAME",
-                "type": "name"
-            },
-            {
-                "name": "POSITION",
+                "name": "POSITION_1",
                 "options": [
                     "first",
                     "last"
-                ]
+                ],
+                "context":"character.address_number"
+            },
+            {
+                "name": "STREET_NAME_1",
+                "type": "streetname",
+                "context": "character.address_street_name"
+            },
+            {
+                "name": "NAME_2",
+                "type": "name",
+                "context":"character.name"
+            },
+            {
+                "name": "STREET_NAME_2",
+                "type": "streetname",
+                "context": "character.address_street_name"
             }
         ]
     },
     {
         "name": "witness_1_interview",
-        "base_quote": "I saw the {CRIME_TYPE} happen, and I recognized the {CRIME_COMMITER} from {PLACE_TYPE} when I was {PLACE_ACTIVITY} on {DATE}.",
+        "base_quote": "I saw the {CRIME_TYPE} happen, and I recognized the {CRIME_COMMITER} from {CLUB_TYPE} when I was {CLUB_ACTIVITY} on {DATE}.",
         "entities": [
             {
                 "name": "CRIME_TYPE",
@@ -59,34 +66,36 @@
                 "switcher": "CRIME.COMMITER"
             },
             {
-                "name": "PLACE_TYPE",
-                "switcher": "PLACE.TYPE"
+                "name": "CLUB_TYPE",
+                "switcher": "CLUB.TYPE"
             },
             {
-                "name": "PLACE_ACTIVITY",
-                "switcher": "PLACE.ACTIVITY"
+                "name": "CLUB_ACTIVITY",
+                "switcher": "CLUB.ACTIVITY"
             },
             {
                 "name": "DATE",
-                "type": "witnessDate"
+                "type": "witnessDate",
+                "context": "clubCheckin.check_in_date"
             }
         ]
     },
     {
         "name": "witness_2_interview",
-        "base_quote": "I {CRIME_NOTICE} and then saw a {GENDER_TYPE} run out. {GENDER_SUBJECTCAPS} had a {PLACE_TYPE} bag. The membership number on the bag {MEMBERSHIP_PARTIAL_REF} `{MEMBERSHIP_PARTIAL_VAL}`. Only {STATUS} members have those bags. The {GENDER_TYPE} got into a car with a plate that included `{PLATE_PARTIAL}`.",
+        "base_quote": "I {CRIME_NOTICE} and then saw a {GENDER_TYPE} run out. {GENDER_SUBJECTCAPS} had a {CLUB_TYPE} bag. The membership number on the bag {MEMBERSHIP_PARTIAL_REF} `{MEMBERSHIP_PARTIAL_VAL}`. Only {CLUB_STATUS} members have those bags. The {GENDER_TYPE} got into a car with a plate that included `{PLATE_PARTIAL}`.",
         "entities": [
             {
                 "name": "CRIME_NOTICE",
                 "switcher": "CRIME.NOTICE"
             },
             {
-                "name": "PLACE_TYPE",
-                "switcher": "PLACE.TYPE"
+                "name": "CLUB_TYPE",
+                "switcher": "CLUB.TYPE"
             },
             {
                 "name": "GENDER_TYPE",
-                "switcher": "GENDER.TYPE"
+                "switcher": "GENDER.TYPE",
+                "context": "license.gender"
             },
             {
                 "name": "GENDER_TYPE",
@@ -97,12 +106,13 @@
                 "switcher": "GENDER.SUBJECTCAPS"
             },
             {
-                "name": "STATUS",
+                "name": "CLUB_STATUS",
                 "options": [
                     "silver",
                     "gold",
                     "platinum"
-                ]
+                ],
+                "context": "clubMembership.membership_status"
             },
             {
                 "name": "MEMBERSHIP_PARTIAL_REF",
@@ -110,21 +120,24 @@
             },
             {
                 "name": "MEMBERSHIP_PARTIAL_VAL",
-                "partial": "MEMBERSHIP.VALUE"
+                "partial": "MEMBERSHIP.VALUE",
+                "context": "clubMembership.id"
             },
             {
                 "name": "PLATE_PARTIAL",
-                "partial": "PLATE.VALUE"
+                "partial": "PLATE.VALUE",
+                "context": "license.plate_number"
             }
         ]
     },
     {
         "name": "confession",
-        "base_quote": "I was hired by a {GENDER_TYPE} with {INCOME}. I don't know {GENDER_POSSESSIVE} name but I know {GENDER_SUBJECT}'s around {HEIGHT_LOW} or {HEIGHT_HIGH}. {GENDER_SUBJECTCAPS} has {HAIR_COLOR} hair and she drives a {CAR}. I know that {GENDER_SUBJECT} attended the {EVENT} 3 times in {YEAR}.",
+        "base_quote": "I was hired by a {GENDER_TYPE} with {INCOME}. I don't know {GENDER_POSSESSIVE} name but I know {GENDER_SUBJECT}'s around {HEIGHT_LOW} or {HEIGHT_HIGH}. {GENDER_SUBJECTCAPS} has {HAIR_COLOR} hair, has {EYE_COLOR} eyes and she drives a {CAR}. I know that {GENDER_SUBJECT} attended the {EVENT} 3 times in {YEAR}.",
         "entities": [
             {
                 "name": "GENDER_TYPE",
-                "switcher": "GENDER.TYPE"
+                "switcher": "GENDER.TYPE",
+                "context": "license.gender"
             },
             {
                 "name": "GENDER_SUBJECT",
@@ -147,11 +160,13 @@
                 "options": [
                     "lots of money",
                     "plenty of bills to pay"
-                ]
+                ],
+                "context": "income.amount"
             },
             {
                 "name": "YEAR",
-                "type": "year"
+                "type": "year",
+                "context": "eventLog.eventDates"
             },
             {
                 "name": "HAIR_COLOR",
@@ -161,23 +176,40 @@
                     "brown",
                     "blonde",
                     "white"
-                ]
+                ],
+                "context": "license.hair_color"
+            },
+            {
+                "name": "EYE_COLOR",
+                "options": [
+                    "amber",
+                    "blue",
+                    "brown",
+                    "gray",
+                    "green",
+                    "hazel"
+                ],
+                "context": "license.eye_color"
             },
             {
                 "name": "EVENT",
-                "type": "event"
+                "type": "event",
+                "context": "eventlog.name"
             },
             {
                 "name": "CAR",
-                "type": "car"
+                "type": "car",
+                "context": "license.car"
             },
             {
                 "name": "HEIGHT_HIGH",
-                "type": "high_height"
+                "type": "high_height",
+                "context": "license.high_height"
             },
             {
                 "name": "HEIGHT_LOW",
-                "type": "low_height"
+                "type": "low_height",
+                "context": "license.low_height"
             }
         ]
     }

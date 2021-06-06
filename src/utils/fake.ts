@@ -63,6 +63,7 @@ export const createLicense = () => ({
     "brown",
     "gray",
     "green",
+    "hazel"
   ]),
   hair_color: faker.random.arrayElement([
     "red",
@@ -84,6 +85,7 @@ export const createRanking = () => ({
 
 export const createScenario = () => ({
   date: dateToInt(faker.date.past()),
-  description: faker.lorem.paragraph(),
+  type: faker.hacker.verb(),
+  report: faker.lorem.paragraph(),
   city: faker.address.city(),
 });
