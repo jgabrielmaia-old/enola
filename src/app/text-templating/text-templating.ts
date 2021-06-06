@@ -10,7 +10,7 @@ import { partial } from "./partial";
 import { switcher } from "./switcher";
 
 export const textTemplating = (contextAttributes: IContext[]): Array<string> => {
-  const templates: ITemplate[] = load(process.cwd() + `/conf/templates/quotes.json`);
+  const templates: ITemplate[] = load(process.cwd() + `/conf/quotes.json`);
   const quotes = Array<any>();
 
   for (let index = 0; index < templates.length; index++) {
