@@ -5,4 +5,4 @@ const baseMonth = faker.date.month({ abbr: true })
 const baseYear = new Date().getFullYear();
 
 export const referenceDate = () => `${baseMonth} ${baseDate}, ${baseYear}`
-export const witnessDate = () => `${baseMonth} ${faker.datatype.number({ min: 1, max: baseDate - 1 })}, ${baseYear}`
+export const pastDate = () => `${baseMonth} ${faker.datatype.number({ min: 1, max: baseDate - 1 })}, ${baseYear}`

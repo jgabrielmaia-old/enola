@@ -5,7 +5,7 @@ import { IEntity } from "../interfaces/ientity";
 import { ITemplate } from "../interfaces/itemplate";
 import { schemaConfig } from "../schema/schema";
 import { load } from "../state-management";
-import { referenceDate, witnessDate } from "./dateHandler";
+import { referenceDate, pastDate } from "./dateHandler";
 import { partial } from "./partial";
 import { switcher } from "./switcher";
 
@@ -61,8 +61,8 @@ const whichElement = (entity: any, quote: string): string => {
       case "name":
         element = `${faker.name.firstName()} ${faker.name.lastName()}`;
         break;
-      case "witnessDate":
-        element = witnessDate();
+      case "pastDate":
+        element = pastDate();
         break;
       case "referenceDate":
         element = referenceDate();

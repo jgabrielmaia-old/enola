@@ -75,7 +75,7 @@
             },
             {
                 "name": "DATE",
-                "type": "witnessDate",
+                "type": "pastDate",
                 "context": "clubCheckin.check_in_date"
             }
         ]
