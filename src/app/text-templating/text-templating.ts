@@ -9,7 +9,7 @@ import { referenceDate, pastDate } from "./dateHandler";
 import { partial } from "./partial";
 import { switcher } from "./switcher";
 
-export const textTemplating = (contextAttributes: IContext[]): Array<string> => {
+export const textTemplating = (contextAttributes: IContext[]): Array<any> => {
   const templates: ITemplate[] = load(process.cwd() + `/conf/quotes.json`);
   const quotes = Array<any>();
 
@@ -24,7 +24,7 @@ export const textTemplating = (contextAttributes: IContext[]): Array<string> => 
       if (entity.options) {
         element = faker.random.arrayElement(entity.options);
       } else {
-        element = whichElement(entity, quote);    
+        element = whichElement(entity);    
       }
       
       if(entity.context) {
@@ -40,7 +40,7 @@ export const textTemplating = (contextAttributes: IContext[]): Array<string> => 
   return quotes;
 };
 
-const whichElement = (entity: any, quote: string): string => {
+const whichElement = (entity: any): string => {
   if (entity.switcher) {
     const [switcherName, caseProperty] = entity.switcher.split('.');
     return switcher(switcherName, caseProperty);

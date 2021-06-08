@@ -1,3 +1,3 @@
 import { gamefy } from "./app/game-creator";
 
-console.log(gamefy());
+gamefy().then(response => console.log(JSON.stringify(response, null, 4)));

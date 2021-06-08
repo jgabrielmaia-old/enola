@@ -3,6 +3,7 @@ import { schemaConfig } from "../../app/schema/schema";
 
 export async function up(knex: Knex) {
   return knex.schema
+    .createTable("challenge", createTableChallenge)
     .createTable(schemaConfig.license, createTableLicense)
     .createTable(schemaConfig.character, createTableCharacter)
     .createTable(schemaConfig.clubMembership, createTableClubMembership)
@@ -94,7 +95,7 @@ function createTableClubCheckin(table: any) {
 function createTableScenario(table: any) {
   table.integer("id").primary();
   table.integer("date").notNullable();
-  table.string("type").notnullable();
+  table.string("type").notNullable();
   table.string("report").notNullable();
   table.string("city").notNullable();
 }
@@ -107,4 +108,9 @@ function createTableRanking(table: any) {
 function createTableSolution(table: any) {
   table.integer("user").notNullable();
   table.string("value").notNullable();
+}
+
+function createTableChallenge(table: any) {
+  table.integer("id").primary();
+  table.string("description").notNullable();
 }
