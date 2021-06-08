@@ -40,7 +40,9 @@ export const gamefy = async () => {
 
   const checkInDate = consolidatedContextAttributes.find(c => c.collumn == "check_in_date").value;
 
-  await makeClubCheckinLog(sourceOneId, checkInDate);
+  const targetOneId = await makeCharacter();
+
+  await makeClubCheckinLog(sourceOneId, checkInDate, targetOneId);
 
   const dialogSourceTwoId = await makeDialog(
     sourceTwoId,
@@ -60,7 +62,10 @@ export const gamefy = async () => {
     ],
     clubLog: [
       await connection.table(schemaConfig.clubCheckin).where({"check_in_date": checkInDate}).select("*")
-    ]
+    ],
+    target: {
+      targetOneId
+    }
   }
 
   return game;
@@ -85,7 +90,7 @@ const makeScenario = async (report: any, descriptionAttributes: any[]) => {
   return await insert(scenario, schemaConfig.scenario)
 }
 
-const makeCharacter = async (additionalProperties?:any) => {
+const makeCharacter = async (additionalProperties?:any) : Promise<number> => {
   
   let toInsert = {};
   const licenseId = await insert(createLicense(), schemaConfig.license);
@@ -148,14 +153,14 @@ const makeNeighborCharacters = async (reference: string, street_number: number, 
 
 const makeDialog = async(id: number, quote: string) => await insert({[`${schemaConfig.character}_id`]: id, transcript: quote}, schemaConfig.dialog);
 
-const makeClubCheckinLog = async(id: number, checkInDate: number) => {
+const makeClubCheckinLog = async(id: number, checkInDate: number, targetCheckIn: number) => {
   const clubCheckins =  createClubCheckins(id);
   await insert(clubCheckins, schemaConfig.clubCheckin);
   const checkIn = {...createClubCheckin(id), check_in_date: checkInDate};
 
   for (let i = 0; i < 10; i++) {
     
-    const memberId = await makeCharacter();
+    const memberId = i == 0 ? targetCheckIn : await makeCharacter();
     
     const checkin_hour = checkIn.check_in_time.toString().substring(0,2);
     const checkout_hour = pad(+checkIn.check_out_time.toString().substring(0,2) + 1);
@@ -169,7 +174,7 @@ const makeClubCheckinLog = async(id: number, checkInDate: number) => {
       check_out_time: memberCheckoutTime,
     };
 
-    await insert(memberCheckIn, schemaConfig.clubCheckin)   
+    await insert(memberCheckIn, schemaConfig.clubCheckin);   
   }
 
   return await insert(checkIn, schemaConfig.clubCheckin);
