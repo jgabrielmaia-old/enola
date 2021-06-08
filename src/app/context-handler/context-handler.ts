@@ -42,7 +42,7 @@ function whichElement(type: string, val: string) {
         case "check_in_date":
             return transformDateToInt(val);
         case "address_number":
-            return whichAddressNumber(val);
+            return `${val}.${whichAddressNumber(val)}`;
         case "amount":
             return whichAmount(val);
         case "eventDates":

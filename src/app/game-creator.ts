@@ -1,3 +1,4 @@
+import faker from "faker";
 import connection from "../database/connection";
 import { createCharacter, createLicense, createClubMembership, createClubCheckins } from "../utils/fake";
 import { consolidateContextAttributes } from "./context-handler/context-handler";
@@ -20,10 +21,10 @@ export const gamefy = async () => {
   
   const sourceCharactersAttributes = consolidatedContextAttributes.filter(c => c.name == schemaConfig.scenario);
 
-  // to-do create neighbors
+  const neighborhood = sourceCharactersAttributes.filter(s => s.collumn == "address_street_name")[0].value;
   const sourceCharacterOneId = await makeSourceCharacter({
     address_number: sourceCharactersAttributes.find(s => s.collumn == "address_number").value,
-    address_street_name: sourceCharactersAttributes.filter(s => s.collumn == "address_street_name")[0].value
+    address_street_name: neighborhood
   });
 
   const sourceCharacterTwoId = await makeSourceCharacter({
@@ -62,14 +63,53 @@ const makeScenario = async (report: any, descriptionAttributes: any[]) => {
   return await insert(scenario, schemaConfig.scenario)
 }
 
-const makeSourceCharacter = async (characterProperties:any) => {
+const makeSourceCharacter = async (additionalProperties:any) => {
+  if(additionalProperties.address_number && <string>additionalProperties.address_number.includes('.')){
+    const [street_position, street_number] = additionalProperties.address_number.split('.');
+    additionalProperties = {...additionalProperties, address_number: street_number};
+
+    makeNeighboors(street_position, street_number, additionalProperties.address_street_name);
+  }
   const licenseId = await insert(createLicense(), schemaConfig.license);
   const character = createCharacter(licenseId);
-  const characterId = await insert({...character, ...characterProperties}, schemaConfig.character);
+  const characterId = await insert({...character, ...additionalProperties}, schemaConfig.character);
   return characterId;
 }
 
-function makeTargetCharacter(quote: any, attributes: any[]) {
+function makeNeighboors(val: string, street_number:number, street_name: string) {
+  switch (val) {
+      case "first":
+          makeNeighborCharacters(`gt`, street_number, street_name);
+          break;
+      case "last":
+          makeNeighborCharacters(`lt`, street_number, street_name);
+          break;
+      default:
+          break;
+  }
+}
 
-  throw new Error("Function not implemented.");
+function makeNeighborCharacters(reference: string, street_number: number, street_name: string) {
+  let begin:number;
+  let end:number;
+
+  switch (reference) {
+    case "gt":
+      begin =  street_number; 
+      end = 1000;
+      break;
+    case "lt":
+      begin =  0; 
+      end = street_number;
+      break;
+    default:
+        break;
+  }
+
+  for (let i = 0; i < 15; i++) {
+    makeSourceCharacter({ 
+      address_number: faker.datatype.number({min: begin, max: end}).toString(), 
+      address_street_name: street_name
+    });
+  };
 }
