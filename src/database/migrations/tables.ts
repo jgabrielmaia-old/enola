@@ -8,7 +8,7 @@ export async function up(knex: Knex) {
     .createTable(schemaConfig.character, createTableCharacter)
     .createTable(schemaConfig.clubMembership, createTableClubMembership)
     .createTable(schemaConfig.eventLog, createTableEventLog)
-    .createTable(schemaConfig.interview, createInterview)
+    .createTable(schemaConfig.dialog, createDialog)
     .createTable(schemaConfig.clubCheckin, createTableClubCheckin)
     .createTable(schemaConfig.scenario, createTableScenario)
     .createTable(schemaConfig.ranking, createTableRanking)
@@ -21,7 +21,7 @@ export async function down(knex: Knex) {
     .dropTable(schemaConfig.ranking)
     .dropTable(schemaConfig.scenario)
     .dropTable(schemaConfig.clubCheckin)
-    .dropTable(schemaConfig.interview)
+    .dropTable(schemaConfig.dialog)
     .dropTable(schemaConfig.eventLog)
     .dropTable(schemaConfig.clubMembership)
     .dropTable(schemaConfig.character)
@@ -72,7 +72,7 @@ function createTableEventLog(table: any) {
   table.integer("event_date").notNullable();
 }
 
-function createInterview(table: any) {
+function createDialog(table: any) {
   table.increments("id").primary();
   table
     .integer(`${schemaConfig.character}_id`)
@@ -88,8 +88,8 @@ function createTableClubCheckin(table: any) {
     .references("id")
     .inTable(schemaConfig.character);
   table.integer("check_in_date").notNullable();
-  table.integer("check_in_time").notNullable();
-  table.integer("check_out_time").notNullable();
+  table.string("check_in_time").notNullable();
+  table.string("check_out_time").notNullable();
 }
 
 function createTableScenario(table: any) {

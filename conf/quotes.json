@@ -1,7 +1,7 @@
 [
     {
         "name": "description",
-        "base_quote": "A crime has taken place and the detective needs your help. The detective gave you the crime scene report, but you somehow lost it. You vaguely remember that the crime was {CRIME_ARTICLE} {CRIME_TYPE} that occurred sometime on ​{DATE}​ and that it took place in {CITY} City. Start by retrieving the corresponding crime scene report from the police department’s database.",
+        "base_quote": "A crime has taken place and the detective needs your help. The detective gave you the crime scene report, but you somehow lost it. You vaguely remember that the crime was {CRIME_ARTICLE} {CRIME_TYPE} that occurred sometime on ​{REF_DATE}​ and that it took place in {CITY} City. Start by retrieving the corresponding crime scene report from the police department’s database.",
         "entities": [
             {
                 "name": "CRIME_TYPE",
@@ -13,7 +13,7 @@
                 "switcher": "CRIME.ARTICLE"
             },
             {
-                "name": "DATE",
+                "name": "REF_DATE",
                 "type": "referenceDate",
                 "context": "scenario.date"
             },
@@ -54,8 +54,8 @@
         ]
     },
     {
-        "name": "witness_1_interview",
-        "base_quote": "I saw the {CRIME_TYPE} happen, and I recognized the {CRIME_COMMITER} from {CLUB_TYPE} when I was {CLUB_ACTIVITY} on {DATE}.",
+        "name": "source_1_dialog",
+        "base_quote": "I saw the {CRIME_TYPE} happen, and I recognized the {CRIME_COMMITER} from {CLUB_TYPE} when I was {CLUB_ACTIVITY} on {CHECK_IN_DATE}.",
         "entities": [
             {
                 "name": "CRIME_TYPE",
@@ -74,14 +74,14 @@
                 "switcher": "CLUB.ACTIVITY"
             },
             {
-                "name": "DATE",
+                "name": "CHECK_IN_DATE",
                 "type": "pastDate",
-                "context": "clubCheckin.check_in_date"
+                "context": "get_fit_later_check_in.check_in_date"
             }
         ]
     },
     {
-        "name": "witness_2_interview",
+        "name": "source_2_dialog",
         "base_quote": "I {CRIME_NOTICE} and then saw a {GENDER_TYPE} run out. {GENDER_SUBJECTCAPS} had a {CLUB_TYPE} bag. The membership number on the bag {MEMBERSHIP_PARTIAL_REF} `{MEMBERSHIP_PARTIAL_VAL}`. Only {CLUB_STATUS} members have those bags. The {GENDER_TYPE} got into a car with a plate that included `{PLATE_PARTIAL}`.",
         "entities": [
             {
@@ -131,7 +131,7 @@
         ]
     },
     {
-        "name": "confession",
+        "name": "target_1_dialog",
         "base_quote": "I was hired by a {GENDER_TYPE} with {INCOME}. I don't know {GENDER_POSSESSIVE} name but I know {GENDER_SUBJECT}'s around {HEIGHT_LOW} or {HEIGHT_HIGH}. {GENDER_SUBJECTCAPS} has {HAIR_COLOR} hair, has {EYE_COLOR} eyes and she drives a {CAR}. I know that {GENDER_SUBJECT} attended the {EVENT} 3 times in {YEAR}.",
         "entities": [
             {

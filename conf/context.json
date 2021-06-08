@@ -4,7 +4,7 @@
     "club": "Get Fit Later Gym",
     "clubMembership": "get_fit_later_member",
     "eventLog": "facebook_event_check_in",
-    "interview": "interview",
+    "dialog": "interview",
     "clubCheckin": "get_fit_later_check_in",
     "scenario": "crime_scene_report",
     "ranking": "income",

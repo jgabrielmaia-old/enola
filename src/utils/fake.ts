@@ -3,6 +3,7 @@ import { schemaConfig } from "../app/schema/schema";
 import {
   dateToInt,
   eventName,
+  pad,
   random_time,
   random_training_time,
 } from "./utils";
@@ -15,12 +16,15 @@ export const createCharacter = (id: number) => ({
   ssn: faker.phone.phoneNumber("#########"),
 });
 
-export const createClubCheckin = (id: number) => ({
-  [`${schemaConfig.clubMembership}_id`]: id,
-  check_in_date: dateToInt(faker.date.past()),
-  check_in_time: random_time(),
-  check_out_time: random_time() + random_training_time(),
-});
+export const createClubCheckin = (id: number) => {
+  const randomTime = random_time();
+  return {
+    [`${schemaConfig.clubMembership}_id`]: id,
+    check_in_date: dateToInt(faker.date.past()),
+    check_in_time: randomTime,
+    check_out_time: random_time(`${pad(+randomTime.substring(0,2)+1)}`),
+  }
+};
 
 export const createClubCheckins = (id: number) => {
   const fakeClubCheckins = [];
@@ -49,7 +53,7 @@ export const createEventLog = (id: number) => ({
   event_date: dateToInt(faker.date.past()),
 });
 
-export const createInterview = (id: number) => ({
+export const createDialog = (id: number) => ({
   [`${schemaConfig.character}_id`]: id,
   transcript: faker.lorem.paragraph(),
 });

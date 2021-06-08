@@ -13,7 +13,7 @@ export const partial = (type: string) => {
     }
 }
 
-export function chop(info: string, name: string) {
+export const chop = (info: string, name: string) => {
     const pos = faker.datatype.number({ min: 3, max: info.length - 3 });
     const reference = faker.random.arrayElement(["starts_with", "ends_with"]);
 

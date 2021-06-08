@@ -1,9 +1,13 @@
 import * as faker from "faker";
 
-export const random_time = () => faker.datatype.number({ min: 900, max: 1800 });
+export const random_time = (hour?:string) => {
+  const dateTime = faker.datatype.datetime();
+  const newHour = pad(hour ? Number.parseInt(hour) : dateTime.getHours());
+  return `${newHour}${pad(dateTime.getMinutes())}`
+}
 
 export const random_training_time = () =>
-  faker.datatype.number({ min: 45, max: 180 });
+  faker.datatype.number({ min: 1, max: 59 });
 
 export const eventName = () =>
   `${faker.random.arrayElement(["The", ""])} ${capitalizeFirstLetter(
