@@ -53,7 +53,7 @@ function createTableCharacter(table: any) {
 }
 
 function createTableClubMembership(table: any) {
-  table.increments("id").primary();
+  table.string("id").primary();
   table
     .integer(`${schemaConfig.character}_id`)
     .references("id")
@@ -84,7 +84,7 @@ function createDialog(table: any) {
 function createTableClubCheckin(table: any) {
   table.increments("id").primary();
   table
-    .integer(`${schemaConfig.clubMembership}_id`)
+    .string(`${schemaConfig.clubMembership}_id`)
     .references("id")
     .inTable(schemaConfig.character);
   table.integer("check_in_date").notNullable();
