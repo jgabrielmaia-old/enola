@@ -1,6 +1,6 @@
 import faker from "faker";
 import connection from "../database/connection";
-import { createCharacter, createLicense, createClubCheckins, createClubCheckin } from "../utils/fake";
+import { createCharacter, createLicense, createClubCheckins, createClubCheckin, createClubMembership } from "../utils/fake";
 import { pad, random_time } from "../utils/utils";
 import { consolidateContextAttributes } from "./context-handler/context-handler";
 import { IContext } from "./interfaces/icontext";
@@ -12,9 +12,6 @@ export const gamefy = async () => {
   const contextAttributes: IContext[] = [];
   const quotes = textTemplating(contextAttributes);
   const consolidatedContextAttributes =  consolidateContextAttributes(contextAttributes);
-
-  const challengeId = await makeChallenge(
-    quotes.find(q => q.name == "description"));
 
   const scenarioId = await makeScenario(
     quotes.find(q => q.name == schemaConfig.scenario), 
@@ -42,12 +39,17 @@ export const gamefy = async () => {
 
   const targetOneId = await makeCharacter();
 
-  await makeClubCheckinLog(sourceOneId, checkInDate, targetOneId);
+  await makeSourceClubCheckinLog(await makeClubMembership(sourceOneId), checkInDate, targetOneId);
 
   const dialogSourceTwoId = await makeDialog(
     sourceTwoId,
     quotes.find(q => q.name == "source_2_dialog").quote
   );
+
+
+  /** END **/
+  const challengeId = await makeChallenge(
+    quotes.find(q => q.name == "description"));
 
   const game = {
     challenge: await connection.table("challenge").where({"id": challengeId}).select("*").first(),
@@ -67,6 +69,8 @@ export const gamefy = async () => {
       targetOneId
     }
   }
+
+  
 
   return game;
 };
@@ -153,29 +157,39 @@ const makeNeighborCharacters = async (reference: string, street_number: number, 
 
 const makeDialog = async(id: number, quote: string) => await insert({[`${schemaConfig.character}_id`]: id, transcript: quote}, schemaConfig.dialog);
 
-const makeClubCheckinLog = async(id: number, checkInDate: number, targetCheckIn: number) => {
-  const clubCheckins =  createClubCheckins(id);
-  await insert(clubCheckins, schemaConfig.clubCheckin);
-  const checkIn = {...createClubCheckin(id), check_in_date: checkInDate};
+const makeSourceClubCheckinLog = async(sourceMembershipId: string, checkInDate: number, targetCheckIn: number) => {
+  
+  const sourceClubCheckins =  createClubCheckins(sourceMembershipId);
+  await insert(sourceClubCheckins, schemaConfig.clubCheckin)
+ 
+  const sourceTranscriptCheckIn = {...createClubCheckin(sourceMembershipId), check_in_date: checkInDate};
 
   for (let i = 0; i < 10; i++) {
     
-    const memberId = i == 0 ? targetCheckIn : await makeCharacter();
-    
-    const checkin_hour = checkIn.check_in_time.toString().substring(0,2);
-    const checkout_hour = pad(+checkIn.check_out_time.toString().substring(0,2) + 1);
-    const memberCheckInTime = random_time(checkin_hour);
-    const memberCheckoutTime = random_time(checkout_hour.toString());
+    const characterId = i == 0 ? targetCheckIn : await makeCharacter();
 
-    const memberCheckIn = {
-      [`${schemaConfig.clubMembership}_id`]: memberId,
-      check_in_date: checkInDate,
-      check_in_time: memberCheckInTime,
-      check_out_time: memberCheckoutTime,
-    };
-
-    await insert(memberCheckIn, schemaConfig.clubCheckin);   
+    await insert(makeRandomTrainerCheckIn(await makeClubMembership(characterId), sourceTranscriptCheckIn, checkInDate), schemaConfig.clubCheckin);   
   }
 
-  return await insert(checkIn, schemaConfig.clubCheckin);
+  return await insert(sourceTranscriptCheckIn, schemaConfig.clubCheckin);
+}
+
+const makeRandomTrainerCheckIn = (randomTrainerId: string, checkIn: any, checkInDate: number) =>{
+  const checkin_hour = checkIn.check_in_time.toString().substring(0,2);
+  const checkout_hour = pad(+checkIn.check_out_time.toString().substring(0,2) + 1);
+  const memberCheckInTime = random_time(checkin_hour);
+  const memberCheckoutTime = random_time(checkout_hour.toString());
+
+  return {
+    [`${schemaConfig.clubMembership}_id`]: randomTrainerId,
+    check_in_date: checkInDate,
+    check_in_time: memberCheckInTime,
+    check_out_time: memberCheckoutTime,
+  };
+}
+
+const makeClubMembership = async (characterId: number) => {
+  await insert(createClubMembership(characterId), schemaConfig.clubMembership);
+  const {id} = await connection.table(schemaConfig.clubMembership).where({[`${schemaConfig.character}_id`]: characterId}).select("id").first()
+  return id;
 }

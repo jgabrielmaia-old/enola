@@ -7,7 +7,7 @@ export const partial = (type: string) => {
             return chop(membership_value, "membership");
         }
         case "PLATE": {
-            const plate_value = faker.random.alphaNumeric(9);
+            const plate_value = faker.random.alphaNumeric(9).toUpperCase();
             return chop(plate_value, "plate_value");
         }
     }

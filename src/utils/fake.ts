@@ -5,7 +5,6 @@ import {
   eventName,
   pad,
   random_time,
-  random_training_time,
 } from "./utils";
 
 export const createCharacter = (id: number) => ({
@@ -16,28 +15,29 @@ export const createCharacter = (id: number) => ({
   ssn: faker.phone.phoneNumber("#########"),
 });
 
-export const createClubCheckin = (id: number) => {
+export const createClubCheckin = (membershipId: string) => {
   const randomTime = random_time();
   return {
-    [`${schemaConfig.clubMembership}_id`]: id,
+    [`${schemaConfig.clubMembership}_id`]: membershipId,
     check_in_date: dateToInt(faker.date.past()),
     check_in_time: randomTime,
     check_out_time: random_time(`${pad(+randomTime.substring(0,2)+1)}`),
   }
 };
 
-export const createClubCheckins = (id: number) => {
+export const createClubCheckins = (membershipId: string) => {
   const fakeClubCheckins = [];
 
   for (let i = 0; i < faker.datatype.number({ min: 3, max: 10 }); i++) {
-    fakeClubCheckins.push(createClubCheckin(id));
+    fakeClubCheckins.push(createClubCheckin(membershipId));
   }
 
   return fakeClubCheckins;
 }
 
-export const createClubMembership = (id: number) => ({
-  [`${schemaConfig.character}_id`]: id,
+export const createClubMembership = (characterId: number) => ({
+  id: faker.random.alphaNumeric(8).toUpperCase(),
+  [`${schemaConfig.character}_id`]: characterId,
   membership_start_date: dateToInt(faker.date.past()),
   membership_status: faker.random.arrayElement([
     "active",
@@ -77,7 +77,7 @@ export const createLicense = () => ({
     "white",
   ]),
   gender: faker.random.arrayElement(["male", "female"]),
-  plate_number: faker.random.alphaNumeric(9),
+  plate_number: faker.random.alphaNumeric(9).toUpperCase(),
   car_maker: faker.vehicle.manufacturer(),
   car_model: faker.vehicle.model(),
 });
