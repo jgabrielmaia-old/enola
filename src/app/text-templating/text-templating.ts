@@ -27,8 +27,16 @@ export const textTemplating = (contextAttributes: IContext[]): Array<any> => {
         element = whichElement(entity);    
       }
       
-      if(entity.context) {
-        addAttributes(templates[index].name, entity, element, contextAttributes);
+      if(entity.context) {  
+
+        if(entity.partial) {
+          const [partial_info, info] = element.split(".");
+          addAttributes(templates[index].name, entity, info, contextAttributes);
+          element = partial_info;
+        }
+        else {
+          addAttributes(templates[index].name, entity, element, contextAttributes)
+        };
       }
       
       quote = quote.replace(`{${entity.name}}`, element);
@@ -131,7 +139,7 @@ function whichPartialInfo(partialInfo: any, partialProperty: string): string {
     case "REFERENCE":
       return partialInfo.reference;
     case "VALUE":
-      return partialInfo.chopped;
+      return `${partialInfo.chopped}.${partialInfo.info}`;
   }
 }
 
