@@ -8,13 +8,13 @@ export const switcher = (name: string, caseProperty: string) => {
     let switcherType = '';
 
     if ((caseProperty == 'TYPE' && switcherType != name) || switcherType == '') {
-        if (!casesCache.some(c => c.name == name)) {
+        if (casesCache.some(c => c.name == name)) {
+            switcherType = casesCache.find(c => c.name == name).cases['TYPE'];        
+        }
+        else {
             const cases = faker.random.arrayElement(switchers.find(switcher => switcher.name == name).cases);
             casesCache.push({ name, cases });
             switcherType = cases['TYPE'];
-        }
-        else {
-            switcherType = casesCache.find(c => c.name == name).cases['TYPE'];
         }
     }
 

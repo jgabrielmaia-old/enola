@@ -1,13 +1,26 @@
 import * as faker from "faker";
 
-export const random_time = (hour?:string) => {
+export const randomTime = (hour?:string) => {
   const dateTime = faker.datatype.datetime();
   const newHour = pad(hour ? Number.parseInt(hour) : dateTime.getHours());
   return `${newHour}${pad(dateTime.getMinutes())}`
 }
 
-export const random_training_time = () =>
+export const randomTrainingTime = () =>
   faker.datatype.number({ min: 1, max: 59 });
+
+export const randomGender = () => faker.random.arrayElement(["male", "female"]);
+
+export const whichGender = (nameGender: string): number => {
+  switch (nameGender) {
+    case "male":
+    case "man":
+        return 0  
+    case "female":
+    case "woman":
+      return 1;
+  }
+}
 
 export const eventName = () =>
   `${faker.random.arrayElement(["The", ""])} ${capitalizeFirstLetter(

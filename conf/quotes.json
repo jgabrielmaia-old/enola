@@ -82,7 +82,7 @@
     },
     {
         "name": "source_2_dialog",
-        "base_quote": "I {CRIME_NOTICE} and then saw a {GENDER_TYPE} run out. {GENDER_SUBJECTCAPS} had a {CLUB_TYPE} bag. The membership number on the bag {MEMBERSHIP_PARTIAL_REF} `{MEMBERSHIP_PARTIAL_VAL}`. Only {CLUB_STATUS} members have those bags. The {GENDER_TYPE} got into a car with a plate that included `{PLATE_PARTIAL}`.",
+        "base_quote": "I {CRIME_NOTICE} and then saw a {GENDER_TYPE} run out. {GENDER_SUBJECTCAPS} had a {CLUB_TYPE} bag. The membership number on the bag {MEMBERSHIP_PARTIAL_REF} `{MEMBERSHIP_PARTIAL_VAL}`. Only {CLUB_STATUS} members have those bags. The {GENDER_TYPE} got into a car with a plate that included `{PLATE_PARTIAL_VAL}`.",
         "entities": [
             {
                 "name": "CRIME_NOTICE",
@@ -124,7 +124,7 @@
                 "context": "clubMembership.id"
             },
             {
-                "name": "PLATE_PARTIAL",
+                "name": "PLATE_PARTIAL_VAL",
                 "partial": "PLATE.VALUE",
                 "context": "license.plate_number"
             }

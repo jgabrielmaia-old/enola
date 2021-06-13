@@ -1,17 +1,19 @@
 import faker from "faker";
 import connection from "../database/connection";
 import { createCharacter, createLicense, createClubCheckins, createClubCheckin, createClubMembership } from "../utils/fake";
-import { pad, random_time } from "../utils/utils";
+import { pad, randomTime } from "../utils/utils";
 import { consolidateContextAttributes } from "./context-handler/context-handler";
-import { IContext } from "./interfaces/icontext";
 import { insert } from "./repository/repository";
 import { schemaConfig } from "./schema/schema";
 import { textTemplating } from "./text-templating/text-templating";
 
-export const gamefy = async () => {
-  const contextAttributes: IContext[] = [];
-  const quotes = textTemplating(contextAttributes);
-  const consolidatedContextAttributes =  consolidateContextAttributes(contextAttributes);
+export const gamefy = async () => { 
+  const quotes = textTemplating();
+
+  const challengeId = await makeChallenge(
+    quotes.find(q => q.name == "description"));
+
+  const consolidatedContextAttributes = consolidateContextAttributes();
 
   const scenarioId = await makeScenario(
     quotes.find(q => q.name == schemaConfig.scenario), 
@@ -37,13 +39,22 @@ export const gamefy = async () => {
     quotes.find(q => q.name == "source_1_dialog").quote
   );
 
-  const checkInDate = consolidatedContextAttributes.find(c => c.collumn == "check_in_date").value;
-  
-  const targetOneLicenseId = await makeLicense();
-  const targetOneId = await makeCharacter(targetOneLicenseId);
-  const targetOneMembershipId = await makeClubMembership(targetOneId);
+  const targetOneLicense:any = consolidatedContextAttributes
+    .filter(c => c.name == "source_2_dialog" && c.table == "license")
+    .map(c => { return {"key": c.collumn, "value": c.value}})
+    .reduce((obj,item) => Object.assign(obj, { [item.key]: item.value }), {});
+
+  const targetOneClubMembership = consolidatedContextAttributes
+    .filter(c => c.name == "source_2_dialog" && c.table == "clubMembership")
+    .map(c => { return {"key": c.collumn, "value": c.value}})
+    .reduce((obj,item) => Object.assign(obj, { [item.key]: item.value }), {});
+
+  const targetOneLicenseId = await makeLicense(targetOneLicense);
+  const targetOneId = await makeCharacter(targetOneLicenseId, undefined, targetOneLicense.gender);
+  const targetOneMembershipId = await makeClubMembership(targetOneId, targetOneClubMembership);
 
   const sourceOneMembership = await makeClubMembership(sourceOneId);
+  const checkInDate = consolidatedContextAttributes.find(c => c.collumn == "check_in_date").value;
 
   await makeSourceClubCheckinLog(sourceOneMembership, checkInDate, targetOneMembershipId);
 
@@ -57,27 +68,25 @@ export const gamefy = async () => {
     quotes.find(q => q.name == "target_1_dialog").quote
   )
 
-  /** END **/
-  const challengeId = await makeChallenge(
-    quotes.find(q => q.name == "description"));
-
   const game = {
-    challenge: await connection.table("challenge").where({"id": challengeId}).select("*").first(),
+    challenge: await connection.table("challenge").where({id: challengeId}).select("*").first(),
     [`${schemaConfig.scenario}`]: await connection.table(schemaConfig.scenario).where({"id": scenarioId}).select("*").first(),
     sources: [
-      await connection.table(schemaConfig.character).where({"id": sourceOneId}).select("*").first(),
-      await connection.table(schemaConfig.character).where({"id": sourceTwoId}).select("*").first(),
+      await connection.table(schemaConfig.character).where({id: sourceOneId}).select("*").first(),
+      await connection.table(schemaConfig.character).where({id: sourceTwoId}).select("*").first(),
     ],
     dialogs: [
-      await connection.table(schemaConfig.dialog).where({"id": dialogSourceOneId}).select("*").first(),
-      await connection.table(schemaConfig.dialog).where({"id": dialogSourceTwoId}).select("*").first(),
-      await connection.table(schemaConfig.dialog).where({"id": dialogTargetId}).select("*").first(),
+      await connection.table(schemaConfig.dialog).where({id: dialogSourceOneId}).select("*").first(),
+      await connection.table(schemaConfig.dialog).where({id: dialogSourceTwoId}).select("*").first(),
+      // await connection.table(schemaConfig.dialog).where({id: dialogTargetId}).select("*").first(),
     ],
-    clubLog: [
-      await connection.table(schemaConfig.clubCheckin).where({"check_in_date": checkInDate}).select("*")
-    ],
+    // clubLog: [
+    //   await connection.table(schemaConfig.clubCheckin).where({"check_in_date": checkInDate}).select("*")
+    // ],
     target: {
-      targetOneId
+      profile: await connection.table(schemaConfig.character).where({id: targetOneId}).select("*"),
+      license: await connection.table(schemaConfig.license).where({id: targetOneLicenseId}).select("*"),
+      membership: await connection.table(schemaConfig.clubMembership).where({id: targetOneMembershipId}).select("*")
     }
   }
 
@@ -104,28 +113,26 @@ const makeScenario = async (report: any, descriptionAttributes: any[]) => {
 }
 
 const makeLicense = async(licenseProperties?:any) => {
-  let properties = {...licenseProperties};
-
-  if(properties){
-    return await insert({...createLicense(), ...properties}, schemaConfig.license);
+  if(licenseProperties){
+    const license = {...createLicense(), ...licenseProperties};
+    console.log(license);
+    return await insert(license, schemaConfig.license);
   }
   
   return await insert(createLicense(), schemaConfig.license);
 }
 
-const makeCharacter = async (licenseId:number, characterProperties?:any) : Promise<number> => {
-  let properties = {...characterProperties};
-
-  if(properties){
-    if(properties.address_number){
-      const addressNumber = checkAddressNumber(properties.address_number, properties.address_street_name);
-      properties = {...properties, address_number: addressNumber};
+const makeCharacter = async (licenseId:number, characterProperties?:any, nameGender?: string) : Promise<number> => {
+  if(characterProperties){
+    if(characterProperties.address_number){
+      const addressNumber = checkAddressNumber(characterProperties.address_number, characterProperties.address_street_name);
+      characterProperties = {...characterProperties, address_number: addressNumber};
     }
 
-    return await insert({...createCharacter(licenseId), ...properties}, schemaConfig.character);
+    return await insert({...createCharacter(licenseId,nameGender), ...characterProperties}, schemaConfig.character);
   } 
 
-  return await insert(createCharacter(licenseId), schemaConfig.character);
+  return await insert(createCharacter(licenseId,nameGender), schemaConfig.character);
 
 }
 
@@ -207,8 +214,8 @@ const makeSourceClubCheckinLog = async(sourceMembershipId: string, checkInDate: 
 const makeRandomTrainerCheckIn = (randomTrainerId: string, checkIn: any, checkInDate: number) =>{
   const checkin_hour = checkIn.check_in_time.toString().substring(0,2);
   const checkout_hour = pad(+checkIn.check_out_time.toString().substring(0,2) + 1);
-  const memberCheckInTime = random_time(checkin_hour);
-  const memberCheckoutTime = random_time(checkout_hour.toString());
+  const memberCheckInTime = randomTime(checkin_hour);
+  const memberCheckoutTime = randomTime(checkout_hour.toString());
 
   return {
     [`${schemaConfig.clubMembership}_id`]: randomTrainerId,
@@ -218,7 +225,10 @@ const makeRandomTrainerCheckIn = (randomTrainerId: string, checkIn: any, checkIn
   };
 }
 
-const makeClubMembership = async (characterId: number) => {
+const makeClubMembership = async (characterId: number, membershipProperties?: any) => {
+  if(membershipProperties){
+    await insert({...createClubMembership(characterId), ...membershipProperties}, schemaConfig.clubMembership);    
+  }
   await insert(createClubMembership(characterId), schemaConfig.clubMembership);
 
   const {id} = await connection.table(schemaConfig.clubMembership).where({[`${schemaConfig.character}_id`]: characterId}).select("id").first()

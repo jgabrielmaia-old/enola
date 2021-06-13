@@ -1,8 +1,45 @@
 import faker from "faker";
 import { dateToInt, pad } from "../../utils/utils";
 import { IContext } from "../interfaces/icontext"
+import { IEntity } from "../interfaces/ientity";
 
-export const consolidateContextAttributes = (contextAttributes:IContext[]) => {
+export const contextAttributes: IContext[] = [];
+
+export const addContextAttribute = (name: string, entity: IEntity, element: any) =>{
+    if(entity.partial){
+        if(entity.context){
+            contextAttributes.push({
+                context: entity.context,
+                element: element.original,
+                name
+              });
+        }
+    }
+    else if(entity.name == "CAR"){
+        const [carName,carManufacturer] = element.split(" ");
+        
+        contextAttributes.push({
+            context: `${entity.context}_name`,
+            element: carName,
+            name
+        }),
+
+        contextAttributes.push({
+            context: `${entity.context}_manufacturer`,
+            element: carManufacturer,
+            name
+        })
+    }
+    else {
+        contextAttributes.push({
+          context: entity.context,
+          element,
+          name
+        });
+    }
+}
+
+export const consolidateContextAttributes = () => {
     const context: any[] = [];
     let low_height : number = 0, high_height: number = 0, height_quote_name: string;
     for (const contextAttribute of contextAttributes) {
@@ -16,6 +53,7 @@ export const consolidateContextAttributes = (contextAttributes:IContext[]) => {
         if(collumn == "high_height"){
             high_height = +contextAttribute.element;
         }
+
         if(low_height > 0 && high_height > 0){
             const height = defineHeight(low_height, high_height);
             context.push({name: height_quote_name, table, collumn: "height", value: height});

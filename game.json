@@ -1,0 +1,76 @@
+{
+ "challenge": {
+  "id": 204,
+  "description": "A crime has taken place and the detective needs your help. The detective gave you the crime scene report, but you somehow lost it. You vaguely remember that the crime was a burglary that occurred sometime on ​Jul 7, 2021​ and that it took place in North Karianeshire City. Start by retrieving the corresponding crime scene report from the police department’s database."
+ },
+ "crime_scene_report": {
+  "id": 638,
+  "date": 20210707,
+  "type": "burglary",
+  "report": "Security footage shows that there were 2 witnesses. The first witness lives at the last house on Alexis Via. The other named Cordia Koss, lives somewhere on Mike Trail.",
+  "city": "North Karianeshire"
+ },
+ "sources": [
+  {
+   "id": 4281,
+   "name": "Walter Tremblay",
+   "driver_license_id": 4283,
+   "address_number": 1792,
+   "address_street_name": "Alexis Via",
+   "ssn": 512149816
+  },
+  {
+   "id": 4283,
+   "name": "Cordia Koss",
+   "driver_license_id": 4285,
+   "address_number": 819,
+   "address_street_name": "Mike Trail",
+   "ssn": 511988613
+  }
+ ],
+ "dialogs": [
+  {
+   "id": 906,
+   "person_id": 4281,
+   "transcript": "I saw the burglary happen, and I recognized the burglar from gym when I was working out on Jul 6, 2021."
+  },
+  {
+   "id": 907,
+   "person_id": 4283,
+   "transcript": "I heard the alarms go off and then saw a man run out. He had a gym bag. The membership number on the bag ends with `GQS`. Only platinum members have those bags. The man got into a car with a plate that included `9T5`."
+  }
+ ],
+ "target": {
+  "profile": [
+   {
+    "id": 4286,
+    "name": "Darrell Hermann",
+    "driver_license_id": 4288,
+    "address_number": 1271,
+    "address_street_name": "Kayli Avenue",
+    "ssn": 76998978
+   }
+  ],
+  "license": [
+   {
+    "id": 4288,
+    "age": 57,
+    "height": 151,
+    "eye_color": "brown",
+    "hair_color": "white",
+    "gender": "man",
+    "plate_number": "Q5LA2G9T5",
+    "car_maker": "Ferrari",
+    "car_model": "Silverado"
+   }
+  ],
+  "membership": [
+   {
+    "id": "MC0XXGQS",
+    "person_id": 4286,
+    "membership_start_date": 20210108,
+    "membership_status": "platinum"
+   }
+  ]
+ }
+}

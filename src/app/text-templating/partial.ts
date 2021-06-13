@@ -1,37 +1,51 @@
 import faker from "faker";
+import { IPartial } from "../interfaces/ipartial";
 
-export const partial = (type: string) => {
-    switch (type) {
+
+const partialCache: IPartial[] = [];
+
+export const partial = (entityPartial: string) : IPartial => {
+    const partialName = entityPartial.split(".")[0];
+
+    if(partialCache.some(p => p.name == partialName)) {
+        const element = partialCache.find(p => p.name == partialName);
+        return element;
+    }
+
+    const element = createPartial(partialName);
+    
+    partialCache.push(element);
+    
+    return element;
+}
+
+export const createPartial = (name: string) : IPartial => {
+    switch (name) {
         case "MEMBERSHIP": {
-            const membership_value = faker.random.alphaNumeric(8).toUpperCase();
-            return chop(membership_value, "membership");
+            return chop(name, faker.random.alphaNumeric(8).toUpperCase());
         }
         case "PLATE": {
-            const plate_value = faker.random.alphaNumeric(9).toUpperCase();
-            return chop(plate_value, "plate_value");
+            return(chop(name, faker.random.alphaNumeric(9).toUpperCase()));
         }
     }
 }
 
-export const chop = (info: string, name: string) => {
-    const pos = faker.datatype.number({ min: 3, max: info.length - 3 });
+export const chop = (name:string, original: string) : IPartial => {
     const reference = faker.random.arrayElement(["starts_with", "ends_with"]);
 
     if (reference == "starts_with") {
         return {
             name,
-            info,
+            original,
             reference: "starts with",
-            chopped: info.toString().substring(0, pos),
-            type: "text",
+            value: original.toString().substring(0, 3),
         };
     } else {
         return {
             name,
-            info,
+            original,
             reference: "ends with",
-            chopped: info.toString().substring(pos),
-            type: "text",
+            value: original.toString().substring(original.length-3),
         };
     }
 }

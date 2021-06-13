@@ -1,7 +1,6 @@
 import * as faker from "faker";
 import { eventName } from "../../utils/utils";
-import { IContext } from "../interfaces/icontext";
-import { IEntity } from "../interfaces/ientity";
+import { addContextAttribute } from "../context-handler/context-handler";
 import { ITemplate } from "../interfaces/itemplate";
 import { schemaConfig } from "../schema/schema";
 import { load } from "../state-management";
@@ -9,9 +8,9 @@ import { referenceDate, pastDate } from "./dateHandler";
 import { partial } from "./partial";
 import { switcher } from "./switcher";
 
-export const textTemplating = (contextAttributes: IContext[]): Array<any> => {
+export const textTemplating = (): any[] => {
   const templates: ITemplate[] = load(process.cwd() + `/conf/quotes.json`);
-  const quotes = Array<any>();
+  const quotes : any[] = [];
 
   for (let index = 0; index < templates.length; index++) {
     let quote = templates[index].base_quote;
@@ -23,22 +22,21 @@ export const textTemplating = (contextAttributes: IContext[]): Array<any> => {
 
       if (entity.options) {
         element = faker.random.arrayElement(entity.options);
-      } else {
+      }
+      else if (entity.partial) {
+        const partialObject = partial(entity.partial);
+        const property = entity.partial.split(".")[1].toLowerCase();
+        element = partialObject[property];
+        addContextAttribute(templates[index].name, entity, partialObject);
+      }
+      else {
         element = whichElement(entity);    
       }
       
-      if(entity.context) {  
+      if(entity.context && !entity.partial) { 
+        addContextAttribute(templates[index].name, entity, element)
+      };
 
-        if(entity.partial) {
-          const [partial_info, info] = element.split(".");
-          addAttributes(templates[index].name, entity, info, contextAttributes);
-          element = partial_info;
-        }
-        else {
-          addAttributes(templates[index].name, entity, element, contextAttributes)
-        };
-      }
-      
       quote = quote.replace(`{${entity.name}}`, element);
     }
 
@@ -48,17 +46,10 @@ export const textTemplating = (contextAttributes: IContext[]): Array<any> => {
   return quotes;
 };
 
-const whichElement = (entity: any): string => {
+const whichElement = (entity: any): any => {
   if (entity.switcher) {
     const [switcherName, caseProperty] = entity.switcher.split('.');
     return switcher(switcherName, caseProperty);
-  }
-  else if (entity.partial) {
-    const [partialName, partialProperty] = entity.partial.split('.');
-    const partialInfo = partial(partialName);
-
-    return whichPartialInfo(partialInfo, partialProperty);
-
   }
   else {
     let element : any;
@@ -107,39 +98,3 @@ const whichElement = (entity: any): string => {
     return element;
   }
 }
-
-function addAttributes(name: string, entity: IEntity, element: string, contextAttributes: IContext[]) {
-  if(entity.name == "CAR"){
-    const [carName,carManufacturer] = element.split(" ");
-    
-    contextAttributes.push({
-      context: `${entity.context}_name`,
-      element: carName,
-      name
-    }),
-
-    contextAttributes.push({
-      context: `${entity.context}_manufacturer`,
-      element: carManufacturer,
-      name
-    })
-  }
-  
-  else{
-    contextAttributes.push({
-      context: entity.context,
-      element,
-      name
-    })
-  }
-}
-
-function whichPartialInfo(partialInfo: any, partialProperty: string): string {
-  switch (partialProperty) {
-    case "REFERENCE":
-      return partialInfo.reference;
-    case "VALUE":
-      return `${partialInfo.chopped}.${partialInfo.info}`;
-  }
-}
-

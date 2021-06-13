@@ -4,7 +4,7 @@ export function dirname() {
   return process.cwd();
 }
 
-export function save(content: string, path: string) {
+export function save(content: any, path: string) {
   const contentString = JSON.stringify(content, null, " ");
   return fs.writeFileSync(path, contentString);
 }

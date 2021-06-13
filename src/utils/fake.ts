@@ -4,24 +4,32 @@ import {
   dateToInt,
   eventName,
   pad,
-  random_time,
+  randomGender,
+  randomTime,
+  whichGender,
 } from "./utils";
 
-export const createCharacter = (id: number) => ({
-  name: faker.fake("{{name.firstName}} {{name.lastName}}"),
-  [`${schemaConfig.license}_id`]: id,
-  address_number: faker.datatype.number({ min: 1, max: 2000 }),
-  address_street_name: faker.address.streetName(),
-  ssn: faker.phone.phoneNumber("#########"),
-});
+export const createCharacter = (id: number, nameGender?:string) =>
+{
+  const firstName = nameGender ? faker.name.firstName(whichGender(nameGender)) : faker.name.firstName(whichGender(randomGender()));
+  const name = `${firstName} ${faker.name.lastName()}`;
+
+  return {
+    name,
+    [`${schemaConfig.license}_id`]: id,
+    address_number: faker.datatype.number({ min: 1, max: 2000 }),
+    address_street_name: faker.address.streetName(),
+    ssn: faker.phone.phoneNumber("#########"),
+  }
+};
 
 export const createClubCheckin = (membershipId: string) => {
-  const randomTime = random_time();
+  const givenRandomTime = randomTime();
   return {
     [`${schemaConfig.clubMembership}_id`]: membershipId,
     check_in_date: dateToInt(faker.date.past()),
-    check_in_time: randomTime,
-    check_out_time: random_time(`${pad(+randomTime.substring(0,2)+1)}`),
+    check_in_time: givenRandomTime,
+    check_out_time: randomTime(`${pad(+givenRandomTime.substring(0,2)+1)}`),
   }
 };
 
@@ -76,7 +84,7 @@ export const createLicense = () => ({
     "blonde",
     "white",
   ]),
-  gender: faker.random.arrayElement(["male", "female"]),
+  gender: randomGender(),
   plate_number: faker.random.alphaNumeric(9).toUpperCase(),
   car_maker: faker.vehicle.manufacturer(),
   car_model: faker.vehicle.model(),

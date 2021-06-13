@@ -1,4 +1,4 @@
 import { gamefy } from "./app/game-creator";
+import { save } from "./app/state-management";
 
-// gamefy()
-gamefy().then(response => console.log(JSON.stringify(response, null, 4)));
+gamefy().then(response => save(response, "game.json"));

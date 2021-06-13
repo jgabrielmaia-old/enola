@@ -1,5 +1,6 @@
 export interface IContext {
     element: string,
-    context: string,
     name: string,
+    context?: string,
+    partial?: string,
 }
