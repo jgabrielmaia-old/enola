@@ -161,12 +161,12 @@
                     "lots of money",
                     "plenty of bills to pay"
                 ],
-                "context": "income.amount"
+                "context": "ranking.amount"
             },
             {
                 "name": "YEAR",
                 "type": "year",
-                "context": "eventLog.eventDates"
+                "context": "eventLog.event_dates"
             },
             {
                 "name": "HAIR_COLOR",
@@ -194,7 +194,7 @@
             {
                 "name": "EVENT",
                 "type": "event",
-                "context": "eventlog.name"
+                "context": "eventLog.event_name"
             },
             {
                 "name": "CAR",

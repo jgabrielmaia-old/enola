@@ -101,7 +101,7 @@ function createTableScenario(table: any) {
 }
 
 function createTableRanking(table: any) {
-  table.integer("ssn").references("ssn").inTable(schemaConfig.character);
+  table.integer("ssn").references("ssn").inTable(schemaConfig.character).primary();
   table.integer("annual_income").notNullable();
 }
 

@@ -19,13 +19,13 @@ export const addContextAttribute = (name: string, entity: IEntity, element: any)
         const [carName,carManufacturer] = element.split(" ");
         
         contextAttributes.push({
-            context: `${entity.context}_name`,
+            context: `${entity.context}_model`,
             element: carName,
             name
         }),
 
         contextAttributes.push({
-            context: `${entity.context}_manufacturer`,
+            context: `${entity.context}_maker`,
             element: carManufacturer,
             name
         })
@@ -83,7 +83,7 @@ function whichElement(type: string, val: string) {
             return `${val}.${whichAddressNumber(val)}`;
         case "amount":
             return whichAmount(val);
-        case "eventDates":
+        case "event_dates":
             return createEventDates(val);
         default:
             element = val;

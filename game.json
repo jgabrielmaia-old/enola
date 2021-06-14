@@ -1,75 +1,131 @@
 {
  "challenge": {
-  "id": 204,
-  "description": "A crime has taken place and the detective needs your help. The detective gave you the crime scene report, but you somehow lost it. You vaguely remember that the crime was a burglary that occurred sometime on ​Jul 7, 2021​ and that it took place in North Karianeshire City. Start by retrieving the corresponding crime scene report from the police department’s database."
+  "id": 244,
+  "description": "A crime has taken place and the detective needs your help. The detective gave you the crime scene report, but you somehow lost it. You vaguely remember that the crime was a robbery that occurred sometime on ​May 25, 2021​ and that it took place in Sioux Falls City. Start by retrieving the corresponding crime scene report from the police department’s database."
  },
  "crime_scene_report": {
-  "id": 638,
-  "date": 20210707,
-  "type": "burglary",
-  "report": "Security footage shows that there were 2 witnesses. The first witness lives at the last house on Alexis Via. The other named Cordia Koss, lives somewhere on Mike Trail.",
-  "city": "North Karianeshire"
+  "id": 678,
+  "date": 20210525,
+  "type": "robbery",
+  "report": "Security footage shows that there were 2 witnesses. The first witness lives at the last house on Hayden Key. The other named Chasity Gleason, lives somewhere on Ward Crest.",
+  "city": "Sioux Falls"
  },
  "sources": [
   {
-   "id": 4281,
-   "name": "Walter Tremblay",
-   "driver_license_id": 4283,
-   "address_number": 1792,
-   "address_street_name": "Alexis Via",
-   "ssn": 512149816
+   "id": 5418,
+   "name": "Regina Bayer",
+   "driver_license_id": 5418,
+   "address_number": 972,
+   "address_street_name": "Hayden Key",
+   "ssn": 423573287
   },
   {
-   "id": 4283,
-   "name": "Cordia Koss",
-   "driver_license_id": 4285,
-   "address_number": 819,
-   "address_street_name": "Mike Trail",
-   "ssn": 511988613
+   "id": 5420,
+   "name": "Chasity Gleason",
+   "driver_license_id": 5420,
+   "address_number": 1820,
+   "address_street_name": "Ward Crest",
+   "ssn": 220665233
   }
  ],
  "dialogs": [
   {
-   "id": 906,
-   "person_id": 4281,
-   "transcript": "I saw the burglary happen, and I recognized the burglar from gym when I was working out on Jul 6, 2021."
+   "id": 1024,
+   "person_id": 5418,
+   "transcript": "I saw the robbery happen, and I recognized the robber from gym when I was working out on May 5, 2021."
   },
   {
-   "id": 907,
-   "person_id": 4283,
-   "transcript": "I heard the alarms go off and then saw a man run out. He had a gym bag. The membership number on the bag ends with `GQS`. Only platinum members have those bags. The man got into a car with a plate that included `9T5`."
+   "id": 1025,
+   "person_id": 5420,
+   "transcript": "I heard a person screaming loudly and then saw a man run out. He had a gym bag. The membership number on the bag ends with `ZTH`. Only platinum members have those bags. The man got into a car with a plate that included `BC4`."
+  },
+  {
+   "id": 1026,
+   "person_id": 5423,
+   "transcript": "I was hired by a man with lots of money. I don't know his name but I know he's around 167 or 178. He has blonde hair, has amber eyes and she drives a Volvo Model T. I know that he attended the The Sexy Blues Experience 3 times in 2020."
   }
  ],
- "target": {
+ "target_one": {
   "profile": [
    {
-    "id": 4286,
-    "name": "Darrell Hermann",
-    "driver_license_id": 4288,
-    "address_number": 1271,
-    "address_street_name": "Kayli Avenue",
-    "ssn": 76998978
+    "id": 5423,
+    "name": "Derrick Rempel",
+    "driver_license_id": 5423,
+    "address_number": 1858,
+    "address_street_name": "VonRueden Station",
+    "ssn": 473617755
    }
   ],
   "license": [
    {
-    "id": 4288,
-    "age": 57,
-    "height": 151,
-    "eye_color": "brown",
-    "hair_color": "white",
+    "id": 5423,
+    "age": 25,
+    "height": 155,
+    "eye_color": "blue",
+    "hair_color": "black",
     "gender": "man",
-    "plate_number": "Q5LA2G9T5",
-    "car_maker": "Ferrari",
-    "car_model": "Silverado"
+    "plate_number": "BC4VDRSWO",
+    "car_maker": "Tesla",
+    "car_model": "Alpine"
    }
   ],
   "membership": [
    {
-    "id": "MC0XXGQS",
-    "person_id": 4286,
-    "membership_start_date": 20210108,
+    "id": "Q7HGOZTH",
+    "person_id": 5423,
+    "membership_start_date": 20201101,
     "membership_status": "platinum"
+   }
+  ]
+ },
+ "target_two": {
+  "profile": [
+   {
+    "id": 5446,
+    "name": "Bruce Prohaska",
+    "driver_license_id": 5446,
+    "address_number": 448,
+    "address_street_name": "Shayna Port",
+    "ssn": 679706109
+   }
+  ],
+  "license": [
+   {
+    "id": 5423,
+    "age": 25,
+    "height": 155,
+    "eye_color": "blue",
+    "hair_color": "black",
+    "gender": "man",
+    "plate_number": "BC4VDRSWO",
+    "car_maker": "Tesla",
+    "car_model": "Alpine"
+   }
+  ],
+  "ranking": [
+   {
+    "ssn": 679706109,
+    "annual_income": 274260
+   }
+  ],
+  "eventLog": [
+   {
+    "id": 519,
+    "person_id": 5446,
+    "event_name": "The Sexy Blues Experience",
+    "event_date": 20200128
+   },
+   {
+    "id": 520,
+    "person_id": 5446,
+    "event_name": "The Sexy Blues Experience",
+    "event_date": 20200724
+   },
+   {
+    "id": 521,
+    "person_id": 5446,
+    "event_name": "The Sexy Blues Experience",
+    "event_date": 20200423
    }
   ]
  }

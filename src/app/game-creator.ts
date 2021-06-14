@@ -1,6 +1,6 @@
 import faker from "faker";
 import connection from "../database/connection";
-import { createCharacter, createLicense, createClubCheckins, createClubCheckin, createClubMembership } from "../utils/fake";
+import { createCharacter, createLicense, createClubCheckins, createClubCheckin, createClubMembership, createRanking } from "../utils/fake";
 import { pad, randomTime } from "../utils/utils";
 import { consolidateContextAttributes } from "./context-handler/context-handler";
 import { insert } from "./repository/repository";
@@ -68,6 +68,36 @@ export const gamefy = async () => {
     quotes.find(q => q.name == "target_1_dialog").quote
   )
 
+  const targetTwoLicense:any = consolidatedContextAttributes
+  .filter(c => c.name == "target_1_dialog" && c.table == "license")
+  .map(c => { return {"key": c.collumn, "value": c.value}})
+  .reduce((obj,item) => Object.assign(obj, { [item.key]: item.value }), {});
+
+  const targetTwoRanking:any = consolidatedContextAttributes
+  .filter(c => c.name == "target_1_dialog" && c.table == "ranking")
+  .map(c => { return {"key": c.collumn, "value": c.value}})
+  .reduce((obj,item) => Object.assign(obj, { [item.key]: item.value }), {});
+
+  const targetTwoEventLog:any = consolidatedContextAttributes
+  .filter(c => c.name == "target_1_dialog" && c.table == "eventLog")
+  .map(c => { return {"key": c.collumn, "value": c.value}})
+  .reduce((obj,item) => Object.assign(obj, { [item.key]: item.value }), {});
+
+  const targeTwoLicenseId = await makeLicense(targetTwoLicense);
+  const targetTwoId = await makeCharacter(targeTwoLicenseId, undefined, targetTwoLicense.gender);
+  const targetTwo = await connection.table(schemaConfig.character).where({id: targetTwoId}).select("*").first(); 
+
+  targetTwoEventLog.event_dates.map((d: number) => {
+    return {
+      [`${schemaConfig.character}_id`]: targetTwoId,
+      event_name: targetTwoEventLog.event_name,
+      event_date: d
+    }
+  }).forEach(async (event: any) => await insert(event, schemaConfig.eventLog));
+
+  const targetTwoRankingEntity = {annual_income: targetTwoRanking.amount, ssn: targetTwo.ssn};
+  await insert(targetTwoRankingEntity, schemaConfig.ranking);
+
   const game = {
     challenge: await connection.table("challenge").where({id: challengeId}).select("*").first(),
     [`${schemaConfig.scenario}`]: await connection.table(schemaConfig.scenario).where({"id": scenarioId}).select("*").first(),
@@ -78,15 +108,18 @@ export const gamefy = async () => {
     dialogs: [
       await connection.table(schemaConfig.dialog).where({id: dialogSourceOneId}).select("*").first(),
       await connection.table(schemaConfig.dialog).where({id: dialogSourceTwoId}).select("*").first(),
-      // await connection.table(schemaConfig.dialog).where({id: dialogTargetId}).select("*").first(),
+      await connection.table(schemaConfig.dialog).where({id: dialogTargetId}).select("*").first(),
     ],
-    // clubLog: [
-    //   await connection.table(schemaConfig.clubCheckin).where({"check_in_date": checkInDate}).select("*")
-    // ],
-    target: {
+    target_one: {
       profile: await connection.table(schemaConfig.character).where({id: targetOneId}).select("*"),
       license: await connection.table(schemaConfig.license).where({id: targetOneLicenseId}).select("*"),
       membership: await connection.table(schemaConfig.clubMembership).where({id: targetOneMembershipId}).select("*")
+    },
+    target_two: {
+      profile: await connection.table(schemaConfig.character).where({id: targetTwoId}).select("*"),
+      license: await connection.table(schemaConfig.license).where({id: targetOneLicenseId}).select("*"),
+      ranking: await connection.table(schemaConfig.ranking).where({ssn: targetTwo.ssn}).select("*"),
+      eventLog: await connection.table(schemaConfig.eventLog).where({[`${schemaConfig.character}_id`]: targetTwoId}).select("*")
     }
   }
 
@@ -115,7 +148,6 @@ const makeScenario = async (report: any, descriptionAttributes: any[]) => {
 const makeLicense = async(licenseProperties?:any) => {
   if(licenseProperties){
     const license = {...createLicense(), ...licenseProperties};
-    console.log(license);
     return await insert(license, schemaConfig.license);
   }
   
