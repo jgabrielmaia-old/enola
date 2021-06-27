@@ -42,3 +42,6 @@ yarn.lock
 
 # ignore database
 src/database/database.sqlite*
+
+# ignore game log
+game.json
