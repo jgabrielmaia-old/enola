@@ -1,11 +1,11 @@
 import faker from "faker";
 import connection from "../database/connection";
 import { createCharacter, createLicense, createClubCheckins, createClubCheckin, createClubMembership, createRanking } from "../utils/fake";
-import { pad, randomTime } from "../utils/utils";
+import { membershipNumber, pad, plateNumber, randomTime } from "../utils/utils";
 import { consolidateContextAttributes } from "./context-handler/context-handler";
 import { insert } from "./repository/repository";
 import { schemaConfig } from "./schema/schema";
-import { textTemplating } from "./text-templating/text-templating";
+import { shadowTargetProperties, textTemplating } from "./text-templating/text-templating";
 
 export const gamefy = async () => { 
   const quotes = textTemplating();
@@ -23,7 +23,7 @@ export const gamefy = async () => {
 
   const neighborhood = sourcesAttributes.filter(s => s.collumn == "address_street_name")[0].value;
   const sourceOneId = await makeCharacter(await makeLicense(),
-    {
+  {
     address_number: sourcesAttributes.find(s => s.collumn == "address_number").value,
     address_street_name: neighborhood
   });
@@ -53,10 +53,12 @@ export const gamefy = async () => {
   const targetOneId = await makeCharacter(targetOneLicenseId, undefined, targetOneLicense.gender);
   const targetOneMembershipId = await makeClubMembership(targetOneId, targetOneClubMembership);
 
+  const shadowTargetMembershipId = await createShadowTarget();
+
   const sourceOneMembership = await makeClubMembership(sourceOneId);
   const checkInDate = consolidatedContextAttributes.find(c => c.collumn == "check_in_date").value;
 
-  await makeSourceClubCheckinLog(sourceOneMembership, checkInDate, targetOneMembershipId);
+  await makeSourceClubCheckinLog(sourceOneMembership, checkInDate, targetOneMembershipId, shadowTargetMembershipId);
 
   const dialogSourceTwoId = await makeDialog(
     sourceTwoId,
@@ -220,7 +222,7 @@ const makeNeighborCharacters = async (reference: string, street_number: number, 
 
 const makeDialog = async(id: number, quote: string) => await insert({[`${schemaConfig.character}_id`]: id, transcript: quote}, schemaConfig.dialog);
 
-const makeSourceClubCheckinLog = async(sourceMembershipId: string, checkInDate: number, targetMembershipId: string) => {
+const makeSourceClubCheckinLog = async(sourceMembershipId: string, checkInDate: number, targetMembershipId: string, shadowTargetMembershipId: string) => {
   
   const sourceClubCheckins =  createClubCheckins(sourceMembershipId);
 
@@ -228,8 +230,10 @@ const makeSourceClubCheckinLog = async(sourceMembershipId: string, checkInDate: 
  
   const sourceTranscriptCheckIn = {...createClubCheckin(sourceMembershipId), check_in_date: checkInDate};
   const targetTranscriptCheckIn = makeRandomTrainerCheckIn(targetMembershipId, sourceTranscriptCheckIn, checkInDate);
+  const shadowTargetTranscriptCheckIn = makeRandomTrainerCheckIn(shadowTargetMembershipId, sourceTranscriptCheckIn, checkInDate);
 
   await insert(targetTranscriptCheckIn, schemaConfig.clubCheckin);   
+  await insert(shadowTargetTranscriptCheckIn, schemaConfig.clubCheckin);   
 
   for (let i = 0; i < 10; i++) {
     const licenseId = await makeLicense();
@@ -265,4 +269,29 @@ const makeClubMembership = async (characterId: number, membershipProperties?: an
 
   const {id} = await connection.table(schemaConfig.clubMembership).where({[`${schemaConfig.character}_id`]: characterId}).select("id").first()
   return id;
+}
+
+const createShadowTarget = async () => {
+
+  const gender = shadowTargetProperties.find(s => s.name == "GENDER_TYPE").element;
+  const platePartial : string = shadowTargetProperties.find(s => s.name == "PLATE_PARTIAL_VAL").element;
+  const generatedPlate = plateNumber();
+  const plate = `${platePartial}${generatedPlate.substring(platePartial.length, generatedPlate.length)}`;
+
+  const licenseId = await makeLicense({gender, plate_number: plate});
+  const characterId = await makeCharacter(licenseId);
+
+  const status = shadowTargetProperties.find(s => s.name == "CLUB_STATUS").element;
+  const membershipPartial = shadowTargetProperties.find(s => s.name == "MEMBERSHIP_PARTIAL_VAL").element;
+  const membershipReference = shadowTargetProperties.find(s => s.name == "MEMBERSHIP_PARTIAL_REF").element;
+
+  const generatedMembership = membershipNumber();
+  
+  if(membershipReference == "starts with") {
+    const id = `${membershipPartial}${generatedMembership.substring(membershipPartial.length, generatedMembership.length)}`;
+    return await makeClubMembership(characterId, {membership_status: status, id});
+  }
+
+  const id = `${generatedMembership.substring(generatedMembership.length, membershipPartial.length)}${membershipPartial}`;
+  return await makeClubMembership(characterId, {membership_status: status, id});
 }

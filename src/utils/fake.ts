@@ -3,7 +3,9 @@ import { schemaConfig } from "../app/schema/schema";
 import {
   dateToInt,
   eventName,
+  membershipNumber,
   pad,
+  plateNumber,
   randomGender,
   randomTime,
   whichGender,
@@ -44,7 +46,7 @@ export const createClubCheckins = (membershipId: string) => {
 }
 
 export const createClubMembership = (characterId: number) => ({
-  id: faker.random.alphaNumeric(8).toUpperCase(),
+  id: membershipNumber(),
   [`${schemaConfig.character}_id`]: characterId,
   membership_start_date: dateToInt(faker.date.past()),
   membership_status: faker.random.arrayElement([
@@ -85,7 +87,7 @@ export const createLicense = () => ({
     "white",
   ]),
   gender: randomGender(),
-  plate_number: faker.random.alphaNumeric(9).toUpperCase(),
+  plate_number: plateNumber(),
   car_maker: faker.vehicle.manufacturer(),
   car_model: faker.vehicle.model(),
 });

@@ -8,6 +8,8 @@ import { referenceDate, pastDate } from "./dateHandler";
 import { partial } from "./partial";
 import { switcher } from "./switcher";
 
+export const shadowTargetProperties : any[] = []
+
 export const textTemplating = (): any[] => {
   const templates: ITemplate[] = load(process.cwd() + `/conf/quotes.json`);
   const quotes : any[] = [];
@@ -27,6 +29,7 @@ export const textTemplating = (): any[] => {
         const partialObject = partial(entity.partial);
         const property = entity.partial.split(".")[1].toLowerCase();
         element = partialObject[property];
+        shadowTargetProperties.push({...entity, element});
         addContextAttribute(templates[index].name, entity, partialObject);
       }
       else {
@@ -36,6 +39,11 @@ export const textTemplating = (): any[] => {
       if(entity.context && !entity.partial) { 
         addContextAttribute(templates[index].name, entity, element)
       };
+
+      if(templates[index].name == "source_2_dialog" && !entity.partial && entity.context)
+      {
+        shadowTargetProperties.push({...entity, element});
+      }
 
       quote = quote.replace(`{${entity.name}}`, element);
     }
@@ -85,7 +93,7 @@ const whichElement = (entity: any): any => {
         element = (new Date().getFullYear() - 1).toString();
         break;
       case "car":
-        element =  `${faker.vehicle.manufacturer()} ${faker.vehicle.model()}`;
+        element = `${faker.vehicle.manufacturer()} ${faker.vehicle.model()}`;
         break;
       case "low_height":
         element = faker.datatype.number({ min: 163, max: 168 }).toString();

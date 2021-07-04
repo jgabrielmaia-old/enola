@@ -50,3 +50,7 @@ export const pad = (n: Number) => {
     ? n
     : new Array(2 - numberString.length + 1).join("0") + n;
 };
+
+export const plateNumber = () => faker.random.alphaNumeric(9).toUpperCase();
+
+export const membershipNumber = () => faker.random.alphaNumeric(8).toUpperCase();
