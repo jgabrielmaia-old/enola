@@ -29,7 +29,7 @@ export const textTemplating = (): any[] => {
         const partialObject = partial(entity.partial);
         const property = entity.partial.split(".")[1].toLowerCase();
         element = partialObject[property];
-        shadowTargetProperties.push({...entity, element});
+        shadowTargetProperties.push({quote: templates[index].name, ...entity, element});
         addContextAttribute(templates[index].name, entity, partialObject);
       }
       else {
@@ -40,9 +40,9 @@ export const textTemplating = (): any[] => {
         addContextAttribute(templates[index].name, entity, element)
       };
 
-      if(templates[index].name == "source_2_dialog" && !entity.partial && entity.context)
+      if((templates[index].name == "source_2_dialog" || templates[index].name == "target_1_dialog") && !entity.partial && entity.context)
       {
-        shadowTargetProperties.push({...entity, element});
+        shadowTargetProperties.push({quote: templates[index].name, ...entity, element});
       }
 
       quote = quote.replace(`{${entity.name}}`, element);

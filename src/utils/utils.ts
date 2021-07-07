@@ -54,3 +54,30 @@ export const pad = (n: Number) => {
 export const plateNumber = () => faker.random.alphaNumeric(9).toUpperCase();
 
 export const membershipNumber = () => faker.random.alphaNumeric(8).toUpperCase();
+
+export const defineHeight = (low_height: number, high_height: number) => {
+  return faker.datatype.number({min:low_height, max:high_height});
+}
+
+export const createDate = (year: string) =>  {
+  return +`${year}${pad(faker.datatype.number({min: 1, max: 12}))}${pad(faker.datatype.number({min: 1, max: 28}))}`
+}
+
+export const createEventDates = (year: string) => {
+  return [
+      createDate(year),
+      createDate(year),
+      createDate(year)
+  ]
+}
+
+export const whichAmount = (val: string) => {
+  switch (val) {
+      case "plenty of bills to pay":
+          return faker.datatype.number({min:12000, max:30000});
+      case "lots of money":
+          return faker.datatype.number({min:80000, max:500000});
+      default:
+          break;
+  }
+}

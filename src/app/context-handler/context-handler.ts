@@ -1,5 +1,5 @@
 import faker from "faker";
-import { dateToInt, pad } from "../../utils/utils";
+import { createEventDates, dateToInt, defineHeight, pad, whichAmount } from "../../utils/utils";
 import { IContext } from "../interfaces/icontext"
 import { IEntity } from "../interfaces/ientity";
 
@@ -141,32 +141,3 @@ function whichAddressNumber(val: string) {
             break;
     }
 }
-
-
-function whichAmount(val: string) {
-    switch (val) {
-        case "plenty of bills to pay":
-            return faker.datatype.number({min:12000, max:30000});
-        case "lots of money":
-            return faker.datatype.number({min:80000, max:500000});
-        default:
-            break;
-    }
-}
-
-function createEventDates(year: string) {
-    return [
-        createDate(year),
-        createDate(year),
-        createDate(year)
-    ]
-}
-
-function createDate(year: string) {
-    return +`${year}${pad(faker.datatype.number({min: 1, max: 12}))}${pad(faker.datatype.number({min: 1, max: 28}))}`
-}
-
-function defineHeight(low_height: number, high_height: number) {
-    return faker.datatype.number({min:low_height, max:high_height});
-}
-

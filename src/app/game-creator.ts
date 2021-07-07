@@ -1,7 +1,7 @@
 import faker from "faker";
 import connection from "../database/connection";
 import { createCharacter, createLicense, createClubCheckins, createClubCheckin, createClubMembership, createRanking } from "../utils/fake";
-import { membershipNumber, pad, plateNumber, randomTime } from "../utils/utils";
+import { createDate, createEventDates, defineHeight, eventName, membershipNumber, pad, plateNumber, randomTime, whichAmount } from "../utils/utils";
 import { consolidateContextAttributes } from "./context-handler/context-handler";
 import { insert } from "./repository/repository";
 import { schemaConfig } from "./schema/schema";
@@ -95,10 +95,14 @@ export const gamefy = async () => {
       event_name: targetTwoEventLog.event_name,
       event_date: d
     }
-  }).forEach(async (event: any) => await insert(event, schemaConfig.eventLog));
+  }).forEach(async (event: any) => {
+    await insert(event, schemaConfig.eventLog);
+    makeCrowd(event)
+  });
 
-  const targetTwoRankingEntity = {annual_income: targetTwoRanking.amount, ssn: targetTwo.ssn};
-  await insert(targetTwoRankingEntity, schemaConfig.ranking);
+  makeRanking(targetTwoRanking.amount, targetTwo.ssn)
+
+  const shadowTargetTwoMembershipId = await createShadowTargetTwo();
 
   const game = {
     challenge: await connection.table("challenge").where({id: challengeId}).select("*").first(),
@@ -121,7 +125,7 @@ export const gamefy = async () => {
       profile: await connection.table(schemaConfig.character).where({id: targetTwoId}).select("*"),
       license: await connection.table(schemaConfig.license).where({id: targetOneLicenseId}).select("*"),
       ranking: await connection.table(schemaConfig.ranking).where({ssn: targetTwo.ssn}).select("*"),
-      eventLog: await connection.table(schemaConfig.eventLog).where({[`${schemaConfig.character}_id`]: targetTwoId}).select("*")
+      eventLog: await connection.table(schemaConfig.eventLog).where({[`${schemaConfig.character}_id`]: targetTwoId}).select("*"),
     }
   }
 
@@ -272,18 +276,17 @@ const makeClubMembership = async (characterId: number, membershipProperties?: an
 }
 
 const createShadowTarget = async () => {
-
-  const gender = shadowTargetProperties.find(s => s.name == "GENDER_TYPE").element;
-  const platePartial : string = shadowTargetProperties.find(s => s.name == "PLATE_PARTIAL_VAL").element;
+  const gender = shadowTargetProperties.find(s => s.quote == "source_2_dialog" && s.name == "GENDER_TYPE").element;
+  const platePartial : string = shadowTargetProperties.find(s => s.quote == "source_2_dialog" && s.name == "PLATE_PARTIAL_VAL").element;
   const generatedPlate = plateNumber();
   const plate = `${platePartial}${generatedPlate.substring(platePartial.length, generatedPlate.length)}`;
 
   const licenseId = await makeLicense({gender, plate_number: plate});
-  const characterId = await makeCharacter(licenseId);
+  const characterId = await makeCharacter(licenseId, null, gender);
 
-  const status = shadowTargetProperties.find(s => s.name == "CLUB_STATUS").element;
-  const membershipPartial = shadowTargetProperties.find(s => s.name == "MEMBERSHIP_PARTIAL_VAL").element;
-  const membershipReference = shadowTargetProperties.find(s => s.name == "MEMBERSHIP_PARTIAL_REF").element;
+  const status = shadowTargetProperties.find(s => s.quote == "source_2_dialog" && s.name == "CLUB_STATUS").element;
+  const membershipPartial = shadowTargetProperties.find(s => s.quote == "source_2_dialog" && s.name == "MEMBERSHIP_PARTIAL_VAL").element;
+  const membershipReference = shadowTargetProperties.find(s => s.quote == "source_2_dialog" && s.name == "MEMBERSHIP_PARTIAL_REF").element;
 
   const generatedMembership = membershipNumber();
   
@@ -295,3 +298,32 @@ const createShadowTarget = async () => {
   const id = `${generatedMembership.substring(generatedMembership.length, membershipPartial.length)}${membershipPartial}`;
   return await makeClubMembership(characterId, {membership_status: status, id});
 }
+
+const createShadowTargetTwo = async () => {
+  const licenseProperties : any = shadowTargetProperties
+    .filter(s => s.quote == "target_1_dialog" && s.context.split('.')[0] == "license")
+    .map(s => { return {"key": s.context.split('.')[1], "value": s.element}})
+    .reduce((obj,item) => Object.assign(obj, { [item.key]: item.value }), {});
+
+  const amount : any = shadowTargetProperties.find(s => s.quote == "target_1_dialog" && s.context == "ranking.amount").element;
+
+  const height = defineHeight(Number(licenseProperties["low_height"]), Number(licenseProperties["high_height"]));
+  delete licenseProperties.low_height;
+  delete licenseProperties.high_height;
+
+  const [car_maker, car_model] = licenseProperties["car"];
+  delete licenseProperties.car;
+  const licenseId = await makeLicense({...licenseProperties, car_maker, car_model, height});
+  const characterId = await makeCharacter(licenseId, null, licenseProperties["gender"]);
+  const ssn = await connection.table(schemaConfig.character).where({id: characterId}).select("ssn").first();
+  await makeRanking(whichAmount(amount), ssn.ssn);
+}
+
+const makeCrowd = async (event: any) => {
+  for (let index = 0; index < 20; index++) {
+    const fanId = await makeCharacter(await makeLicense());
+    await insert({person_id: fanId, ...event}, schemaConfig.eventLog);
+  }
+}
+
+const makeRanking = async (annual_income: number, ssn: number) => await insert({annual_income, ssn}, schemaConfig.ranking);
