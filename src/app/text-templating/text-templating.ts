@@ -17,6 +17,9 @@ export const textTemplating = (): any[] => {
   for (let index = 0; index < templates.length; index++) {
     let quote = templates[index].base_quote;
     const name = templates[index].name;
+    if(!templates[index].entities)
+      continue;
+    
     const entities = templates[index].entities;
 
     for (let entity of entities) {

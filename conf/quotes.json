@@ -212,5 +212,34 @@
                 "context": "license.low_height"
             }
         ]
+    },
+    {
+        "name": "target_one_found",
+        "base_quote": "Congrats, you found the {CRIME_TYPE}! But wait, there's more... If you think you're up for a challenge, try querying the interview transcript of the {CRIME_COMMITER} to find the real villain behind this crime. If you feel especially confident in your SQL skills, try to complete this final step with no more than 2 queries. Use this same INSERT statement with your new suspect to check your answer.",
+        "entities": [
+            {
+                "name": "CRIME_TYPE",
+                "switcher": "CRIME.TYPE"
+            },
+            {
+                "name": "CRIME_COMMITER",
+                "switcher": "CRIME.COMMITER"
+            }
+        ]
+    },
+    {
+        "name": "target_two_found",
+        "base_quote": "Congrats, you found the brains behind the {CRIME_TYPE}! Everyone in SQL City hails you as the greatest SQL detective of all time. Time to break out the champagne!",
+        "entities": [
+            {
+                "name": "CRIME_TYPE",
+                "switcher": "CRIME.TYPE"
+            }
+        ]
+    },
+    {
+        "name": "not_found",
+        "base_quote": "That's not the right person. Try again!",
+        "entities": []
     }
 ]

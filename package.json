@@ -7,8 +7,7 @@
     "start": "ts-node-dev src/app.ts",
     "latest": "knex migrate:latest --knexfile knexfile.ts migrate:latest",
     "seed": "knex --knexfile knexfile.ts seed:run",
-    "clean": "rm src/database/database.sqlite",
-    "format": "prettier 'src/**/*.ts' --write",
+    "clean": "rm -f src/database/database.sqlite",
     "enola": "npm run clean && npm run latest && npm run seed && npm run start"
   },
   "keywords": [],

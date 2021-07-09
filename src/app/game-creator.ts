@@ -1,9 +1,9 @@
 import faker from "faker";
 import connection from "../database/connection";
-import { createCharacter, createLicense, createClubCheckins, createClubCheckin, createClubMembership, createRanking } from "../utils/fake";
-import { createDate, createEventDates, defineHeight, eventName, membershipNumber, pad, plateNumber, randomTime, whichAmount } from "../utils/utils";
+import { createCharacter, createLicense, createClubCheckins, createClubCheckin, createClubMembership } from "../utils/fake";
+import { defineHeight, membershipNumber, pad, plateNumber, randomTime, whichAmount } from "../utils/utils";
 import { consolidateContextAttributes } from "./context-handler/context-handler";
-import { insert } from "./repository/repository";
+import { insert, raw } from "./repository/repository";
 import { schemaConfig } from "./schema/schema";
 import { shadowTargetProperties, textTemplating } from "./text-templating/text-templating";
 
@@ -102,7 +102,7 @@ export const gamefy = async () => {
 
   makeRanking(targetTwoRanking.amount, targetTwo.ssn)
 
-  const shadowTargetTwoMembershipId = await createShadowTargetTwo();
+  await createShadowTargetTwo();
 
   const game = {
     challenge: await connection.table("challenge").where({id: challengeId}).select("*").first(),
@@ -128,6 +128,14 @@ export const gamefy = async () => {
       eventLog: await connection.table(schemaConfig.eventLog).where({[`${schemaConfig.character}_id`]: targetTwoId}).select("*"),
     }
   }
+
+  const names = (await connection.table(schemaConfig.character)
+    .where({id: targetOneId})
+    .orWhere({id: targetTwoId})
+    .select("name"))
+    .map(({name}) => name);
+
+  makeSolutionChecker(names, quotes);
 
   return game;
 };
@@ -327,3 +335,28 @@ const makeCrowd = async (event: any) => {
 }
 
 const makeRanking = async (annual_income: number, ssn: number) => await insert({annual_income, ssn}, schemaConfig.ranking);
+
+const makeSolutionChecker = async (names: string[], quotes: any[]) => {
+
+  const [{name1,name2}] = await raw(`SELECT hex("${names[0]}") as name1, hex("${names[1]}") as name2`);
+
+  await raw(`
+  CREATE TRIGGER check_solution AFTER INSERT ON solution
+  WHEN new.user==1
+  BEGIN
+      DELETE FROM solution;
+      INSERT INTO solution VALUES (0,
+      CASE WHEN hex(new.value)=="${name1}" 
+              THEN "${sqlQuote(quotes, 'target_one_found')}"
+          WHEN hex(new.value)=="${name2}" 
+              THEN "${sqlQuote(quotes, 'target_two_found')}"
+          ELSE "${sqlQuote(quotes, 'not_found')}"
+      END
+      );
+  END
+  `)
+  
+  console.log(names);
+}
+
+const sqlQuote = (quotes: any[], target: string) => quotes.find(q => q.name == target)['quote'];

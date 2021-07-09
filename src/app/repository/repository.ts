@@ -8,3 +8,11 @@ export const insert = async (entity: unknown, table: any): Promise<any> => {
     console.error(e);
   }
 };
+
+export const raw = (query: string): any => {
+  try {
+    return connection.raw(query);
+  } catch (e) {
+    console.error(e);
+  }
+};
