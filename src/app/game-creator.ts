@@ -355,8 +355,6 @@ const makeSolutionChecker = async (names: string[], quotes: any[]) => {
       );
   END
   `)
-  
-  console.log(names);
 }
 
 const sqlQuote = (quotes: any[], target: string) => quotes.find(q => q.name == target)['quote'];
