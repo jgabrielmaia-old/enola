@@ -11,6 +11,9 @@ export const randomTrainingTime = () =>
 
 export const randomGender = () => faker.random.arrayElement(["male", "female"]);
 
+export const randomAddressNumber = (begin:number,end:number) => 
+faker.datatype.number({min: begin, max: end}).toString();
+
 export const whichGender = (nameGender: string): number => {
   switch (nameGender) {
     case "male":

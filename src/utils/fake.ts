@@ -6,6 +6,7 @@ import {
   membershipNumber,
   pad,
   plateNumber,
+  randomAddressNumber,
   randomGender,
   randomTime,
   whichGender,
@@ -19,7 +20,7 @@ export const createCharacter = (id: number, nameGender?:string) =>
   return {
     name,
     [`${schemaConfig.license}_id`]: id,
-    address_number: faker.datatype.number({ min: 1, max: 2000 }),
+    address_number: randomAddressNumber(1,2000),
     address_street_name: faker.address.streetName(),
     ssn: faker.phone.phoneNumber("#########"),
   }

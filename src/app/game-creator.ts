@@ -1,7 +1,6 @@
-import faker from "faker";
 import connection from "../database/connection";
 import { createCharacter, createLicense, createClubCheckins, createClubCheckin, createClubMembership } from "../utils/fake";
-import { defineHeight, membershipNumber, pad, plateNumber, randomTime, whichAmount } from "../utils/utils";
+import { defineHeight, membershipNumber, pad, plateNumber, randomAddressNumber, randomTime, whichAmount } from "../utils/utils";
 import { consolidateContextAttributes } from "./context-handler/context-handler";
 import { insert, raw } from "./repository/repository";
 import { schemaConfig } from "./schema/schema";
@@ -16,10 +15,10 @@ export const gamefy = async () => {
   const consolidatedContextAttributes = consolidateContextAttributes();
 
   const scenarioId = await makeScenario(
-    quotes.find(q => q.name == schemaConfig.scenario), 
+    quotes.find(q => q.name == "scenario"), 
     consolidatedContextAttributes.filter(c => c.name == "description"));
   
-  const sourcesAttributes = consolidatedContextAttributes.filter(c => c.name == schemaConfig.scenario);
+  const sourcesAttributes = consolidatedContextAttributes.filter(c => c.name == "scenario");
 
   const neighborhood = sourcesAttributes.filter(s => s.collumn == "address_street_name")[0].value;
   const sourceOneId = await makeCharacter(await makeLicense(),
@@ -226,7 +225,7 @@ const makeNeighborCharacters = async (reference: string, street_number: number, 
     await makeCharacter(
       licenseId,
       { 
-        address_number: faker.datatype.number({min: begin, max: end}).toString(), 
+        address_number: randomAddressNumber(begin, end), 
         address_street_name: street_name
       });
   };

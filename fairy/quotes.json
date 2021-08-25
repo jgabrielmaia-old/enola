@@ -1,0 +1,245 @@
+[
+    {
+        "name": "description",
+        "base_quote": "A crime has taken place and the detective needs your help. The detective gave you the crime scene report, but you somehow lost it. You vaguely remember that the crime was {CRIME_ARTICLE} {CRIME_TYPE} that occurred sometime on ​{REF_DATE}​ and that it took place in {CITY} City. Start by retrieving the corresponding crime scene report from the police department’s database.",
+        "entities": [
+            {
+                "name": "CRIME_TYPE",
+                "switcher": "CRIME.TYPE",
+                "context": "scenario.type"
+            },
+            {
+                "name": "CRIME_ARTICLE",
+                "switcher": "CRIME.ARTICLE"
+            },
+            {
+                "name": "REF_DATE",
+                "type": "referenceDate",
+                "context": "scenario.date"
+            },
+            {
+                "name": "CITY",
+                "type": "city",
+                "context": "scenario.city"
+            }
+        ]
+    },
+    {
+        "name": "scenario",
+        "base_quote": "Security footage shows that there were 2 witnesses. The first witness lives at the {POSITION_1} house on {STREET_NAME_1}. The other named {NAME_2}, lives somewhere on {STREET_NAME_2}.",
+        "entities": [
+            {
+                "name": "POSITION_1",
+                "options": [
+                    "first",
+                    "last"
+                ],
+                "context":"character.address_number"
+            },
+            {
+                "name": "STREET_NAME_1",
+                "type": "streetname",
+                "context": "character.address_street_name"
+            },
+            {
+                "name": "NAME_2",
+                "type": "name",
+                "context":"character.name"
+            },
+            {
+                "name": "STREET_NAME_2",
+                "type": "streetname",
+                "context": "character.address_street_name"
+            }
+        ]
+    },
+    {
+        "name": "source_1_dialog",
+        "base_quote": "I saw the {CRIME_TYPE} happen, and I recognized the {CRIME_COMMITER} from {CLUB_TYPE} when I was {CLUB_ACTIVITY} on {CHECK_IN_DATE}.",
+        "entities": [
+            {
+                "name": "CRIME_TYPE",
+                "switcher": "CRIME.TYPE"
+            },
+            {
+                "name": "CRIME_COMMITER",
+                "switcher": "CRIME.COMMITER"
+            },
+            {
+                "name": "CLUB_TYPE",
+                "switcher": "CLUB.TYPE"
+            },
+            {
+                "name": "CLUB_ACTIVITY",
+                "switcher": "CLUB.ACTIVITY"
+            },
+            {
+                "name": "CHECK_IN_DATE",
+                "type": "pastDate",
+                "context": "get_fit_later_check_in.check_in_date"
+            }
+        ]
+    },
+    {
+        "name": "source_2_dialog",
+        "base_quote": "I {CRIME_NOTICE} and then saw a {GENDER_TYPE} run out. {GENDER_SUBJECTCAPS} had a {CLUB_TYPE} bag. The membership number on the bag {MEMBERSHIP_PARTIAL_REF} `{MEMBERSHIP_PARTIAL_VAL}`. Only {CLUB_STATUS} members have those bags. The {GENDER_TYPE} got into a car with a plate that included `{LICENSE_PARTIAL_VAL}`.",
+        "entities": [
+            {
+                "name": "CRIME_NOTICE",
+                "switcher": "CRIME.NOTICE"
+            },
+            {
+                "name": "CLUB_TYPE",
+                "switcher": "CLUB.TYPE"
+            },
+            {
+                "name": "GENDER_TYPE",
+                "switcher": "GENDER.TYPE",
+                "context": "license.gender"
+            },
+            {
+                "name": "GENDER_TYPE",
+                "switcher": "GENDER.TYPE"
+            },
+            {
+                "name": "GENDER_SUBJECTCAPS",
+                "switcher": "GENDER.SUBJECTCAPS"
+            },
+            {
+                "name": "CLUB_STATUS",
+                "options": [
+                    "silver",
+                    "gold",
+                    "platinum"
+                ],
+                "context": "clubMembership.membership_status"
+            },
+            {
+                "name": "MEMBERSHIP_PARTIAL_REF",
+                "partial": "MEMBERSHIP.REFERENCE"
+            },
+            {
+                "name": "MEMBERSHIP_PARTIAL_VAL",
+                "partial": "MEMBERSHIP.VALUE",
+                "context": "clubMembership.id"
+            },
+            {
+                "name": "LICENSE_PARTIAL_VAL",
+                "partial": "LICENSE.VALUE",
+                "context": "license.plate_number"
+            }
+        ]
+    },
+    {
+        "name": "target_1_dialog",
+        "base_quote": "I was hired by a {GENDER_TYPE} with {INCOME}. I don't know {GENDER_POSSESSIVE} name but I know {GENDER_SUBJECT}'s around {HEIGHT_LOW} or {HEIGHT_HIGH}. {GENDER_SUBJECTCAPS} has {HAIR_COLOR} hair, has {EYE_COLOR} eyes and she drives a {CAR}. I know that {GENDER_SUBJECT} attended the {EVENT} 3 times in {YEAR}.",
+        "entities": [
+            {
+                "name": "GENDER_TYPE",
+                "switcher": "GENDER.TYPE",
+                "context": "license.gender"
+            },
+            {
+                "name": "GENDER_SUBJECT",
+                "switcher": "GENDER.SUBJECT"
+            },
+            {
+                "name": "GENDER_SUBJECTCAPS",
+                "switcher": "GENDER.SUBJECTCAPS"
+            },
+            {
+                "name": "GENDER_SUBJECT",
+                "switcher": "GENDER.SUBJECT"
+            },
+            {
+                "name": "GENDER_POSSESSIVE",
+                "switcher": "GENDER.POSSESSIVE"
+            },
+            {
+                "name": "INCOME",
+                "options": [
+                    "lots of money",
+                    "plenty of bills to pay"
+                ],
+                "context": "ranking.amount"
+            },
+            {
+                "name": "YEAR",
+                "type": "year",
+                "context": "eventLog.event_dates"
+            },
+            {
+                "name": "HAIR_COLOR",
+                "options": [
+                    "red",
+                    "black",
+                    "brown",
+                    "blonde",
+                    "white"
+                ],
+                "context": "license.hair_color"
+            },
+            {
+                "name": "EYE_COLOR",
+                "options": [
+                    "amber",
+                    "blue",
+                    "brown",
+                    "gray",
+                    "green",
+                    "hazel"
+                ],
+                "context": "license.eye_color"
+            },
+            {
+                "name": "EVENT",
+                "type": "event",
+                "context": "eventLog.event_name"
+            },
+            {
+                "name": "LICENSE",
+                "type": "unique",
+                "context": "license.unique"
+            },
+            {
+                "name": "HEIGHT_HIGH",
+                "type": "high_height",
+                "context": "license.high_height"
+            },
+            {
+                "name": "HEIGHT_LOW",
+                "type": "low_height",
+                "context": "license.low_height"
+            }
+        ]
+    },
+    {
+        "name": "target_one_found",
+        "base_quote": "Congrats, you found the {CRIME_TYPE}! But wait, there's more... If you think you're up for a challenge, try querying the interview transcript of the {CRIME_COMMITER} to find the real villain behind this crime. If you feel especially confident in your SQL skills, try to complete this final step with no more than 2 queries. Use this same INSERT statement with your new suspect to check your answer.",
+        "entities": [
+            {
+                "name": "CRIME_TYPE",
+                "switcher": "CRIME.TYPE"
+            },
+            {
+                "name": "CRIME_COMMITER",
+                "switcher": "CRIME.COMMITER"
+            }
+        ]
+    },
+    {
+        "name": "target_two_found",
+        "base_quote": "Congrats, you found the brains behind the {CRIME_TYPE}! Everyone in SQL City hails you as the greatest SQL detective of all time. Time to break out the champagne!",
+        "entities": [
+            {
+                "name": "CRIME_TYPE",
+                "switcher": "CRIME.TYPE"
+            }
+        ]
+    },
+    {
+        "name": "not_found",
+        "base_quote": "That's not the right person. Try again!",
+        "entities": []
+    }
+]

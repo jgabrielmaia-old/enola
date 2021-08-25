@@ -11,7 +11,7 @@ import { switcher } from "./switcher";
 export const shadowTargetProperties : any[] = []
 
 export const textTemplating = (): any[] => {
-  const templates: ITemplate[] = load(process.cwd() + `/conf/quotes.json`);
+  const templates: ITemplate[] = load(process.cwd() + `/crimemistery/quotes.json`);
   const quotes : any[] = [];
 
   for (let index = 0; index < templates.length; index++) {
@@ -57,55 +57,33 @@ export const textTemplating = (): any[] => {
   return quotes;
 };
 
+const generateElement = (elementType:string) => {
+  const elementTypes = {
+    "streetname": faker.address.streetName(),
+    "name": `${faker.name.firstName()} ${faker.name.lastName()}`,
+    "pastDate": pastDate(),
+    "referenceDate": referenceDate(),
+    "companyName": faker.name.firstName(),
+    "place": schemaConfig.club,
+    "city": faker.address.city(),
+    "event": eventName(),
+    "year": (new Date().getFullYear() - 1).toString(),
+    "car": `${faker.vehicle.manufacturer()} ${faker.vehicle.model()}`,
+    "low_height": faker.datatype.number({ min: 163, max: 168 }).toString(),
+    "high_height": faker.datatype.number({ min: 171, max: 178 }).toString(),
+    "default": "_"
+  };
+
+  return elementTypes[elementType] || elementTypes.default;
+}
+
 const whichElement = (entity: any): any => {
   if (entity.switcher) {
     const [switcherName, caseProperty] = entity.switcher.split('.');
     return switcher(switcherName, caseProperty);
   }
   else {
-    let element : any;
-    switch (entity.type) {
-      case "streetname":
-        element = faker.address.streetName();
-        break;
-      case "name":
-        element = `${faker.name.firstName()} ${faker.name.lastName()}`;
-        break;
-      case "pastDate":
-        element = pastDate();
-        break;
-      case "referenceDate":
-        element = referenceDate();
-        break;  
-      case "companyName":
-        element = faker.name.firstName();
-        break;
-      case "place":
-        element = schemaConfig.club;
-        break;
-      case "city":
-        element = faker.address.city();
-        break;
-      case "event":
-        element = eventName();
-        break;
-      case "year":
-        element = (new Date().getFullYear() - 1).toString();
-        break;
-      case "hairColor":
-        element = (new Date().getFullYear() - 1).toString();
-        break;
-      case "car":
-        element = `${faker.vehicle.manufacturer()} ${faker.vehicle.model()}`;
-        break;
-      case "low_height":
-        element = faker.datatype.number({ min: 163, max: 168 }).toString();
-        break;
-      case "high_height":
-        element = faker.datatype.number({ min: 171, max: 178 }).toString();
-        break;
-    }
 
-    return element;
+    return generateElement(entity.type);
   }
 }

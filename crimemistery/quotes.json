@@ -1,15 +1,15 @@
 [
     {
         "name": "description",
-        "base_quote": "A crime has taken place and the detective needs your help. The detective gave you the crime scene report, but you somehow lost it. You vaguely remember that the crime was {CRIME_ARTICLE} {CRIME_TYPE} that occurred sometime on ​{REF_DATE}​ and that it took place in {CITY} City. Start by retrieving the corresponding crime scene report from the police department’s database.",
+        "base_quote": "The king demands to see the most remarkable fairy available of the kingdom. The master gnome gave you the fairy kingdom's latest news edition, but you somehow lost it. You vaguely remember that the news was {NEWS_ARTICLE} {NEWS_TYPE} that occurred sometime on ​{REF_DATE}​ and that it took place in {CITY} enchanted place. Start by retrieving the corresponding news from the magic news department’s database.",
         "entities": [
             {
-                "name": "CRIME_TYPE",
+                "name": "NEWS_TYPE",
                 "switcher": "CRIME.TYPE",
                 "context": "scenario.type"
             },
             {
-                "name": "CRIME_ARTICLE",
+                "name": "NEWS_ARTICLE",
                 "switcher": "CRIME.ARTICLE"
             },
             {
@@ -25,7 +25,7 @@
         ]
     },
     {
-        "name": "crime_scene_report",
+        "name": "scenario",
         "base_quote": "Security footage shows that there were 2 witnesses. The first witness lives at the {POSITION_1} house on {STREET_NAME_1}. The other named {NAME_2}, lives somewhere on {STREET_NAME_2}.",
         "entities": [
             {
@@ -55,10 +55,10 @@
     },
     {
         "name": "source_1_dialog",
-        "base_quote": "I saw the {CRIME_TYPE} happen, and I recognized the {CRIME_COMMITER} from {CLUB_TYPE} when I was {CLUB_ACTIVITY} on {CHECK_IN_DATE}.",
+        "base_quote": "I saw the {NEWS_TYPE} happen, and I recognized the {CRIME_COMMITER} from {CLUB_TYPE} when I was {CLUB_ACTIVITY} on {CHECK_IN_DATE}.",
         "entities": [
             {
-                "name": "CRIME_TYPE",
+                "name": "NEWS_TYPE",
                 "switcher": "CRIME.TYPE"
             },
             {
@@ -215,10 +215,10 @@
     },
     {
         "name": "target_one_found",
-        "base_quote": "Congrats, you found the {CRIME_TYPE}! But wait, there's more... If you think you're up for a challenge, try querying the interview transcript of the {CRIME_COMMITER} to find the real villain behind this crime. If you feel especially confident in your SQL skills, try to complete this final step with no more than 2 queries. Use this same INSERT statement with your new suspect to check your answer.",
+        "base_quote": "Congrats, you found the {NEWS_TYPE}! But wait, there's more... If you think you're up for a challenge, try querying the interview transcript of the {CRIME_COMMITER} to find the real villain behind this crime. If you feel especially confident in your SQL skills, try to complete this final step with no more than 2 queries. Use this same INSERT statement with your new suspect to check your answer.",
         "entities": [
             {
-                "name": "CRIME_TYPE",
+                "name": "NEWS_TYPE",
                 "switcher": "CRIME.TYPE"
             },
             {
@@ -229,10 +229,10 @@
     },
     {
         "name": "target_two_found",
-        "base_quote": "Congrats, you found the brains behind the {CRIME_TYPE}! Everyone in SQL City hails you as the greatest SQL detective of all time. Time to break out the champagne!",
+        "base_quote": "Congrats, you found the brains behind the {NEWS_TYPE}! Everyone in SQL City hails you as the greatest SQL detective of all time. Time to break out the champagne!",
         "entities": [
             {
-                "name": "CRIME_TYPE",
+                "name": "NEWS_TYPE",
                 "switcher": "CRIME.TYPE"
             }
         ]

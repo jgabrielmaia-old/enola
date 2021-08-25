@@ -65,7 +65,7 @@ export const consolidateContextAttributes = () => {
                 name: contextAttribute.name, 
                 table, 
                 collumn, 
-                value: whichElement(collumn, contextAttribute.element)
+                value: whichContextProperty(collumn, contextAttribute.element)
             });
         }
     }
@@ -73,7 +73,7 @@ export const consolidateContextAttributes = () => {
     return context;
 }
 
-function whichElement(type: string, val: string) {
+function whichContextProperty(type: string, val: string) {
     let element: any;
     switch (type) {
         case "date":

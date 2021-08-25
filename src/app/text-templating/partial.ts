@@ -24,7 +24,7 @@ export const createPartial = (name: string) : IPartial => {
         case "MEMBERSHIP": {
             return chop(name, faker.random.alphaNumeric(8).toUpperCase());
         }
-        case "PLATE": {
+        case "LICENSE": {
             return(chop(name, faker.random.alphaNumeric(9).toUpperCase()));
         }
     }
