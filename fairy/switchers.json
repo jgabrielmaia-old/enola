@@ -1,0 +1,123 @@
+[
+    {
+        "name": "CRIME",
+        "cases": [
+            {
+                "TYPE": "murder",
+                "ARTICLE": "a",
+                "COMMITER": "murderer",
+                "NOTICE": "heard a gunshot"
+            },
+            {
+                "TYPE": "robbery",
+                "ARTICLE": "a",
+                "COMMITER": "robber",
+                "NOTICE": "heard a person screaming loudly"
+            },
+            {
+                "TYPE": "arson",
+                "ARTICLE": "an",
+                "COMMITER": "arsonist",
+                "NOTICE": "saw a dense smoke coming out of the window"
+            },
+            {
+                "TYPE": "burglary",
+                "ARTICLE": "a",
+                "COMMITER": "burglar",
+                "NOTICE": "heard the alarms go off"
+            },
+            {
+                "TYPE": "theft",
+                "ARTICLE": "a",
+                "COMMITER": "thief",
+                "NOTICE": "saw someone climbing a ladder"
+            }
+        ]
+    },
+    {
+        "name": "CLUB",
+        "cases": [
+            {
+                "TYPE": "convention",
+                "ACTIVITY": "flying by the convention's cave"
+            }
+        ]
+    },
+    {
+        "name": "GENDER",
+        "cases": [
+            {
+                "TYPE": "Aries",
+                "POSSESSIVE": "her",
+                "SUBJECT": "she",
+                "SUBJECTCAPS": "She"
+            },
+            {
+                "TYPE": "Gemini",
+                "POSSESSIVE": "her",
+                "SUBJECT": "she",
+                "SUBJECTCAPS": "She"
+            },
+            {
+                "TYPE": "Cancer",
+                "POSSESSIVE": "her",
+                "SUBJECT": "she",
+                "SUBJECTCAPS": "She"
+            },
+            {
+                "TYPE": "Leo",
+                "POSSESSIVE": "her",
+                "SUBJECT": "she",
+                "SUBJECTCAPS": "She"
+            },
+            {
+                "TYPE": "Virgo",
+                "POSSESSIVE": "her",
+                "SUBJECT": "she",
+                "SUBJECTCAPS": "She"
+            },
+            {
+                "TYPE": "Libra",
+                "POSSESSIVE": "her",
+                "SUBJECT": "she",
+                "SUBJECTCAPS": "She"
+            },
+            {
+                "TYPE": "Scorpio",
+                "POSSESSIVE": "her",
+                "SUBJECT": "she",
+                "SUBJECTCAPS": "She"
+            },
+            {
+                "TYPE": "Sagittarius",
+                "POSSESSIVE": "her",
+                "SUBJECT": "she",
+                "SUBJECTCAPS": "She"
+            },
+            {
+                "TYPE": "Capricorn",
+                "POSSESSIVE": "her",
+                "SUBJECT": "she",
+                "SUBJECTCAPS": "She"
+            },
+            {
+                "TYPE": "Aquarius",
+                "POSSESSIVE": "her",
+                "SUBJECT": "she",
+                "SUBJECTCAPS": "She"
+            },
+            {
+                "TYPE": "Pisces",
+                "POSSESSIVE": "her",
+                "SUBJECT": "she",
+                "SUBJECTCAPS": "She"
+            },
+            {
+                "TYPE": "Aries",
+                "POSSESSIVE": "her",
+                "SUBJECT": "she",
+                "SUBJECTCAPS": "She"
+            }
+        ]
+    }
+]

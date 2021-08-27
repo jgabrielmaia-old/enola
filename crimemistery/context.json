@@ -1,13 +1,77 @@
 {
-    "license": "driver_license",
-    "character": "person",
-    "club": "Get Fit Later Gym",
-    "clubMembership": "get_fit_later_member",
-    "eventLog": "facebook_event_check_in",
-    "dialog": "interview",
-    "clubCheckin": "get_fit_later_check_in",
-    "scenario": "crime_scene_report",
-    "ranking": "income",
-    "solution": "solution",
-    "generation": 500
+    "profile": {
+        "name": "driver_license",
+        "colums" : [
+            "age",
+            "height",
+            "eye_color",
+            "hair_color",
+            "gender",
+            "plate_number",
+            "car_maker",
+            "car_model"
+        ]
+    },
+    "character": {
+        "name": "person",
+        "colums" : [
+            "name",
+            "address_number",
+            "address_street_name",
+            "ssn"
+        ]
+    },
+    "instituitionMembership": {
+        "name": "get_fit_now_member",
+        "colums" : [
+            "membership_start_date",
+            "membership_status"
+        ]
+    },
+    "eventLog": {
+        "name": "facebook_event_checkin",
+        "colums": [
+            "event_name",
+            "date"
+        ]
+    },
+    "dialog": {
+        "name": "interview",
+        "colums": [
+            "transcript"
+        ]
+    },
+    "instituitionCheckin": {
+        "name": "convention_cave_check_in",
+        "colums": [
+            "check_in_date",
+            "check_in_time",
+            "check_out_time"
+        ]
+    },
+    "scenario": {
+        "name":"crime_scene_report",
+        "colums": [
+            "date",
+            "type",
+            "description",
+            "city"
+        ]
+    },
+    "ranking": {
+        "name": "income",
+        "colums": [
+            "ssn",
+            "annual_income"
+        ]
+    },
+    "solution": {
+        "name": "solution",
+        "colums": [
+            "user",
+            "value"
+        ]
+    },
+    "generation": 500,
+    "instution": "Get Fit Now Gym"
 }

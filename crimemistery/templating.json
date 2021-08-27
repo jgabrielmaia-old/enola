@@ -19,27 +19,23 @@
     },
     {
         "name": "generateGender",
-        "options": [
-            "Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"
-        ]
+        "options": ["woman", "man"]
     },
     {
         "name": "generateEventName",
         "options": [
-            "Wings",
-            "Aces",
-            "Hummingbirds",
-            "Nightingales",
-            "Eagles",
-            "Hawks"
+            "Concert",
+            "Show",
+            "Tour",
+            "Spectacle",
+            "Rave",
+            "Experience",
+            "Live"
         ]
     },
     {
         "name": "generateRanking",
-        "options": [
-            "not as fast as it seems from the ground",
-            "a natural sky speedster"
-        ]
+        "options": ["plenty of bills to pay","lots of money"]
     },
     {
         "name": "generateRanking",
@@ -54,9 +50,9 @@
             ],
             [
                 "red",
-                "blue",
-                "green",
-                "crystal",
+                "black",
+                "brown",
+                "blonde",
                 "white"
             ]
         ]

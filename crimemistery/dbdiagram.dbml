@@ -1,0 +1,72 @@
+Table Profile {
+  Id int [pk, increment]
+  Age varchar
+  Height int
+  EyeColor varchar 
+  HairColor varchar 
+  Gender varchar 
+  VehicleIdentifier varchar 
+  VehicleMaker varchar
+  VehicleModel varchar
+}
+
+Table Character {
+  Id int [pk, increment]
+  Name varchar 
+  ProfileId int [ref: - Profile.Id]
+  AddreUniqueIdentifierumber int
+  AddressName varchar
+  UniqueIdentifier int
+}
+
+Table InstitutionMembership {
+  Id int [pk, increment]
+  CharacterId int [ref: - Character.Id]
+  MembershipStartDate int
+  MembershipStatus varchar
+}
+
+Table EventLog {
+  Id int [pk, increment]
+  CharacterId int [ref: > Character.Id]
+  EventName varchar
+  EventDate int
+}
+
+Table Dialog {
+  Id int [pk, increment]
+  CharacterId int [ref: - Character.Id]
+  Transcript varchar
+}
+
+Table InstitutionCheckIn {
+  Id int [pk, increment]
+  InstitutionMembershipId int [ref: > InstitutionMembership.Id]
+  CheckInDate int
+  CheckInTime int
+  CheckOutTime int
+}
+
+Table Scenario {
+  Id int [pk, increment]
+  Date int
+  Type varchar
+  Script varchar
+  Place varchar
+}
+
+Table Ranking {
+  UniqueIdentifier int [ref: - Character.UniqueIdentifier]
+  Value varchar
+}
+
+Table Solution {
+  User int
+  Value varchar
+}
+
+
+Table Challenge {
+  Id int [pk, increment]
+  Description varchar
+}

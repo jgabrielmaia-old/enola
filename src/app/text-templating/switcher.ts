@@ -4,7 +4,7 @@ import { load } from "../state-management";
 
 const casesCache: any[] = [];
 export const switcher = (name: string, caseProperty: string) => {
-    const switchers: ISwitcher[] = load(process.cwd() + `/crimemistery/switches.json`);
+    const switchers: ISwitcher[] = load(process.cwd() + `/crimemistery/switchers.json`);
     let switcherType = '';
 
     if ((caseProperty == 'TYPE' && switcherType != name) || switcherType == '') {

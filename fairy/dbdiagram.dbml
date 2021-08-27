@@ -1,0 +1,72 @@
+Table Broom {
+  Id int [pk, increment]
+  Age varchar
+  Height int
+  EyeColor varchar 
+  WingColor varchar 
+  Gender varchar 
+  Scripture varchar 
+  BroomMaker varchar
+  BroomModel varchar
+}
+
+Table EnchantedCreature {
+  Id int [pk, increment]
+  Name varchar 
+  BroomId int [ref: - Broom.Id]
+  AddressNumber int
+  AddressName varchar
+  TreeOfLifeHazelNutsCount int
+}
+
+Table ConventionPass {
+  Id int [pk, increment]
+  EnchantedCreatureId int [ref: - EnchantedCreature.Id]
+  ConventionPassBuyDate int
+  ConventionPassStatus varchar
+}
+
+Table Tournaments {
+  Id int [pk, increment]
+  EnchantedCreatureId int [ref: > EnchantedCreature.Id]
+  Modality varchar
+  TournamentDate int
+}
+
+Table Chat {
+  Id int [pk, increment]
+  EnchantedCreatureId int [ref: - EnchantedCreature.Id]
+  Transcript varchar
+}
+
+Table ConventionCaveCheckIn {
+  Id int [pk, increment]
+  ConventionPassId int [ref: > ConventionPass.Id]
+  CheckInDate int
+  CheckInTime int
+  CheckOutTime int
+}
+
+Table FairyKingdomNews {
+  Id int [pk, increment]
+  Date int
+  Type varchar
+  Script varchar
+  Place varchar
+}
+
+Table FlightRanking {
+  TreeOfLifeHazelNutsCount int [ref: - EnchantedCreature.TreeOfLifeHazelNutsCount]
+  Value varchar
+}
+
+Table Solution {
+  User int
+  Value varchar
+}
+
+
+Table Challenge {
+  Id int [pk, increment]
+  Description varchar
+}
