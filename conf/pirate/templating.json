@@ -1,0 +1,75 @@
+[
+    {
+        "name": "generateElement",
+        "options": [
+            "streetname",
+            "name",
+            "pastDate",
+            "referenceDate",
+            "companyName",
+            "place",
+            "city",
+            "event",
+            "year",
+            "car",
+            "low_height",
+            "high_height",
+            "default"
+        ]
+    },
+    {
+        "name": "generateGender",
+        "options": [
+            "Aries", "Taurus", "Gemini", "Cancer", "Leo", "Virgo", "Libra", "Scorpio", "Sagittarius", "Capricorn", "Aquarius", "Pisces"
+        ]
+    },
+    {
+        "name": "generateEventName",
+        "options": [
+            "Wings",
+            "Aces",
+            "Hummingbirds",
+            "Nightingales",
+            "Eagles",
+            "Hawks"
+        ]
+    },
+    {
+        "name": "generateRanking",
+        "options": [
+            "not as fast as it seems from the ground",
+            "a natural sky speedster"
+        ]
+    },
+    {
+        "name": "generateRanking",
+        "options": [
+            [
+                "amber",
+                "blue",
+                "brown",
+                "gray",
+                "green",
+                "hazel"
+            ],
+            [
+                "red",
+                "blue",
+                "green",
+                "crystal",
+                "white"
+            ]
+        ]
+    },
+    {
+        "name": "generateMembership",
+        "options": [
+            [
+                "active",
+                "inactive",
+                "gold",
+                "platinum"
+            ]
+        ]
+    }
+]

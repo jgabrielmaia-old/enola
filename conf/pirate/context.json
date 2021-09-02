@@ -1,0 +1,76 @@
+{
+    "license": {
+        "name": "broom",
+        "colums" : [
+            "age",
+            "height",
+            "eye_color",
+            "wing_color",
+            "sign",
+            "scripture",
+            "broom_maker",
+            "broom_model"
+        ]
+    },
+    "character": {
+        "name": "enchanted_creature",
+        "colums" : [
+            "tree_number",
+            "tree_set",
+            "nuts_in_mother_tree"
+        ]
+    },
+    "club": {
+        "name": "convention",
+        "colums" : [
+            "participation_start_date",
+            "current_status"
+        ]
+    },
+    "clubMembership": "convention_member",
+    "eventLog": {
+        "name": "tournaments",
+        "colums": [
+            "tournament_name",
+            "tournament_date"
+        ]
+    },
+    "dialog": {
+        "name": "chat",
+        "colums": [
+            "transcript"
+        ]
+    },
+    "clubCheckin": {
+        "name": "convention_cave_check_in",
+        "colums": [
+            "check_in_date",
+            "check_in_time",
+            "check_out_time"
+        ]
+    },
+    "scenario": {
+        "name":"fairy_kigdom_news",
+        "colums": [
+            "date",
+            "type",
+            "news",
+            "enchanted_place"
+        ]
+    },
+    "ranking": {
+        "name": "flight_ranking",
+        "colums": [
+            "nuts_in_mother_tree",
+            "flight_speed"
+        ]
+    },
+    "solution": {
+        "name": "wizard_wisp",
+        "colums": [
+            "fairy",
+            "value"
+        ]
+    },
+    "generation": 500
+}

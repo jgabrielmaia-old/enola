@@ -1,0 +1,72 @@
+Table ShipDescription {
+  Id int [pk, increment]
+  Age varchar
+  CrewSize int
+  HullLivery varchar 
+  CannonType varchar 
+  Type varchar 
+  FigureHeadId varchar 
+  FigureHeadMaker varchar
+  FigureHeadModel varchar
+}
+
+Table Ship {
+  Id int [pk, increment]
+  Name varchar 
+  ShipDescriptionId int [ref: - ShipDescription.Id]
+  PortNumber int
+  PortName varchar
+  FlagNumber int
+}
+
+Table Company {
+  Id int [pk, increment]
+  ShipId int [ref: - Ship.Id]
+  MembershipStartDate int
+  MembershipStatus varchar
+}
+
+Table IslaDeMuerte {
+  Id int [pk, increment]
+  ShipId int [ref: > Ship.Id]
+  PartyName varchar
+  PartyStartsAt int
+}
+
+Table Journal {
+  Id int [pk, increment]
+  ShipId int [ref: - Ship.Id]
+  Transcript varchar
+}
+
+Table TradeRoute {
+  Id int [pk, increment]
+  CompanyId int [ref: > Company.Id]
+  CheckInDate int
+  CheckInTime int
+  CheckOutTime int
+}
+
+Table TreasureHuntMissions {
+  Id int [pk, increment]
+  Date int
+  Type varchar
+  Script varchar
+  Place varchar
+}
+
+Table CrewBankAccount {
+  FlagNumber int [ref: - Ship.FlagNumber]
+  Value varchar
+}
+
+Table Solution {
+  User int
+  Value varchar
+}
+
+
+Table Challenge {
+  Id int [pk, increment]
+  Description varchar
+}
