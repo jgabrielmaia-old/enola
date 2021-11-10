@@ -72,12 +72,16 @@ export const createEventDates = (year: string) => {
 }
 
 export const whichAmount = (val: string) => {
-  switch (val) {
-      case "plenty of bills to pay":
-          return faker.datatype.number({min:12000, max:30000});
-      case "lots of money":
-          return faker.datatype.number({min:80000, max:500000});
-      default:
-          break;
+
+  let values = {
+    "plenty of bills to pay": function(){
+      return faker.datatype.number({min:12000, max:30000});
+    },
+    "lots of money": function(){
+      return faker.datatype.number({min:80000, max:500000});
+    }
   }
+
+  return values[val]();
+
 }

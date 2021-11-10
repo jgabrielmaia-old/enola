@@ -20,32 +20,41 @@ export const partial = (entityPartial: string) : IPartial => {
 }
 
 export const createPartial = (name: string) : IPartial => {
-    switch (name) {
-        case "MEMBERSHIP": {
+
+    let names = {
+        "MEMBERSHIP": function(){
             return chop(name, faker.random.alphaNumeric(8).toUpperCase());
-        }
-        case "PLATE": {
+        },
+        "PLATE": function(){
             return(chop(name, faker.random.alphaNumeric(9).toUpperCase()));
         }
     }
+    
+    return names[name]();
+
 }
 
 export const chop = (name:string, original: string) : IPartial => {
     const reference = faker.random.arrayElement(["starts_with", "ends_with"]);
 
-    if (reference == "starts_with") {
-        return {
-            name,
-            original,
-            reference: "starts with",
-            value: original.toString().substring(0, 3),
-        };
-    } else {
-        return {
-            name,
-            original,
-            reference: "ends with",
-            value: original.toString().substring(original.length-3),
-        };
+    let element = {
+        "starts_with": function(){
+            return {
+                name,
+                original,
+                reference: "starts with",
+                value: original.toString().substring(0, 3),
+            }; 
+        },
+        "default": function(){
+            return {
+                name,
+                original,
+                reference: "ends with",
+                value: original.toString().substring(original.length-3),
+            };
+        }
     }
+
+    return (element[reference] || element["default"])();
 }
