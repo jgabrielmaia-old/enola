@@ -22,15 +22,11 @@ export const partial = (entityPartial: string) : IPartial => {
 export const createPartial = (name: string) : IPartial => {
 
     let names = {
-        "MEMBERSHIP": function(){
-            return chop(name, faker.random.alphaNumeric(8).toUpperCase());
-        },
-        "PLATE": function(){
-            return(chop(name, faker.random.alphaNumeric(9).toUpperCase()));
-        }
+        "MEMBERSHIP": chop(name, faker.random.alphaNumeric(8).toUpperCase()),
+        "PLATE": chop(name, faker.random.alphaNumeric(9).toUpperCase())
     }
     
-    return names[name]();
+    return names[name];
 
 }
 
@@ -38,23 +34,19 @@ export const chop = (name:string, original: string) : IPartial => {
     const reference = faker.random.arrayElement(["starts_with", "ends_with"]);
 
     let element = {
-        "starts_with": function(){
-            return {
-                name,
-                original,
-                reference: "starts with",
-                value: original.toString().substring(0, 3),
-            }; 
+        "starts_with": {
+            name,
+            original,
+            reference: "starts with",
+            value: original.toString().substring(0, 3),
         },
-        "default": function(){
-            return {
-                name,
-                original,
-                reference: "ends with",
-                value: original.toString().substring(original.length-3),
-            };
+        "default": {
+            name,
+            original,
+            reference: "ends with",
+            value: original.toString().substring(original.length-3),
         }
     }
 
-    return (element[reference] || element["default"])();
+    return (element[reference] || element["default"]);
 }

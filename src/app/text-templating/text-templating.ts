@@ -65,48 +65,21 @@ const whichElement = (entity: any): any => {
     let element: any;
 
     let entityTypes = {
-      "streetname": function(){
-        element = faker.address.streetName();
-      },
-      "name": function(){
-        element = `${faker.name.firstName()} ${faker.name.lastName()}`;
-      },
-      "pastDate": function(){
-        element = pastDate();
-      },
-      "referenceDate": function(){
-        element = referenceDate();
-      },
-      "companyName": function(){
-        element = faker.name.firstName();
-      },
-      "place": function(){
-        element = schemaConfig.club;
-      },
-      "city": function(){
-        element = faker.address.city();
-      },
-      "event": function(){
-        element = eventName();
-      },
-      "year": function(){
-        element = (new Date().getFullYear() - 1).toString();
-      },
-      "hairColor": function(){
-        //HairColor returns a date?
-        element = (new Date().getFullYear() - 1).toString();
-      },
-      "car": function(){
-        element = `${faker.vehicle.manufacturer()} ${faker.vehicle.model()}`;
-      },
-      "low_height": function(){
-        element = faker.datatype.number({ min: 163, max: 168 }).toString();
-      },
-      "high_height": function(){
-        element = faker.datatype.number({ min: 171, max: 178 }).toString();
-      }
+      "streetname": faker.address.streetName(),
+      "name": `${faker.name.firstName()} ${faker.name.lastName()}`,
+      "pastDate": pastDate(),
+      "referenceDate": referenceDate(),
+      "companyName": faker.name.firstName(),
+      "place": schemaConfig.club,
+      "city": faker.address.city(),
+      "event": eventName(),
+      "year": (new Date().getFullYear() - 1).toString(),
+      "hairColor": (new Date().getFullYear() - 1).toString(),
+      "car": `${faker.vehicle.manufacturer()} ${faker.vehicle.model()}`,
+      "low_height": faker.datatype.number({ min: 163, max: 168 }).toString(),
+      "high_height": faker.datatype.number({ min: 171, max: 178 }).toString()
     }
-    entityTypes[entity.type]();
+    element = entityTypes[entity.type];
     return element;
   }
 }
