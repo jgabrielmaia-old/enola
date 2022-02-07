@@ -12,14 +12,16 @@ export const randomTrainingTime = () =>
 export const randomGender = () => faker.random.arrayElement(["male", "female"]);
 
 export const whichGender = (nameGender: string): number => {
-  switch (nameGender) {
-    case "male":
-    case "man":
-        return 0  
-    case "female":
-    case "woman":
-      return 1;
+
+  let genders = {
+    "male": 0,
+    "man": 0,
+    "female":1,
+    "woman": 1
   }
+
+  return genders[nameGender];
+
 }
 
 export const eventName = () =>
@@ -72,12 +74,12 @@ export const createEventDates = (year: string) => {
 }
 
 export const whichAmount = (val: string) => {
-  switch (val) {
-      case "plenty of bills to pay":
-          return faker.datatype.number({min:12000, max:30000});
-      case "lots of money":
-          return faker.datatype.number({min:80000, max:500000});
-      default:
-          break;
+
+  let values = {
+    "plenty of bills to pay": faker.datatype.number({min:12000, max:30000}),
+    "lots of money": faker.datatype.number({min:80000, max:500000})
   }
+
+  return values[val];
+
 }

@@ -74,24 +74,21 @@ export const consolidateContextAttributes = () => {
 }
 
 function whichElement(type: string, val: string) {
-    let element: any;
-    switch (type) {
-        case "date":
-        case "check_in_date":
-            return transformDateToInt(val);
-        case "address_number":
-            return `${val}.${whichAddressNumber(val)}`;
-        case "amount":
-            return whichAmount(val);
-        case "event_dates":
-            return createEventDates(val);
-        default:
-            element = val;
-            break;
+    //let element: any;
+
+    let element = {
+        "date": transformDateToInt(val),
+        "check_in_date":transformDateToInt(val),
+        "address_number": `${val}.${whichAddressNumber(val)}`,
+        "amount": whichAmount(val),
+        "event_dates": createEventDates(val),
+        "default": val
     }
 
-    return element;
+    return (element[type] || element["default"]);
+
 }
+
 function transformDateToInt(evaluate: string) {
     const month = evaluate.substring(0, 3);
     const commaIndex = evaluate.indexOf(",");
@@ -101,43 +98,31 @@ function transformDateToInt(evaluate: string) {
 }
 
 function whichMonth(month: string): number {
-    switch (month) {
-        case 'Jan': 
-            return 1;
-        case 'Fev': 
-            return 2;
-        case 'Mar': 
-            return 3;
-        case 'Apr': 
-            return 4;
-        case 'May': 
-            return 5;
-        case 'Jun': 
-            return 6;
-        case 'Jul': 
-            return 7;
-        case 'Aug': 
-            return 8;
-        case 'Sep': 
-            return 9;
-        case 'Oct': 
-            return 10;
-        case 'Nov': 
-            return 11;
-        case 'Dec': 
-            return 12;
-        default:
-            return 0;
-    };
+
+    let months = {
+        "Jan": 1,
+        "Fev": 2,
+        "Mar": 3,
+        "Apr": 4,
+        "May": 5,
+        "Jun": 6,
+        "Jul": 7,
+        "Aug": 8,
+        "Sep": 9,
+        "Oct": 10,
+        "Nov": 11,
+        "Dec": 12,
+        "default": 0
+    }
+    return (months[month] || months["default"]);
 }
 
 function whichAddressNumber(val: string) {
-    switch (val) {
-        case "first":
-            return faker.datatype.number({min:1, max:5});
-        case "last":
-            return faker.datatype.number({min:100, max:2000});
-        default:
-            break;
+
+    let addres = {
+        "first": faker.datatype.number({min:1, max:5}),
+        "last": faker.datatype.number({min:100, max:2000})
     }
+
+    return addres[val];
 }
